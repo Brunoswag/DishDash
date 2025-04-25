@@ -7,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
-
+  navItems = [
+    { label: 'Home', icon: 'bi bi-house-door' },
+    { label: 'Search', icon: 'bi bi-search' },
+    { label: 'Create', icon: 'bi bi-plus-square' }
+  ];
 }
