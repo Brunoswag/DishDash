@@ -1,4 +1,4 @@
-<div class="d-flex flex-column align-items-center p-3 vh-100 border-end sidebar" [class.collapsed]="!(isExpanded$ | async)">
+<div class="d-flex flex-column align-items-center p-3 border-end sidebar" [class.collapsed]="!(isExpanded$ | async)">
   <!-- Navigation Links -->
   <ul class="nav nav-pills flex-column w-100">
     @for (item of navItems; track item) {
@@ -12,16 +12,16 @@
   </ul>
 
   <!-- Profile -->
-  <div class="mt-auto">
+  <div class="profile">
     <a href="#" class="nav-link d-flex align-items-center gap-3 text-dark">
       <img
-        src="../../assets/user_profile_picture.jpeg"
+        [src]="user?.profilePicture"
         alt="Profile picture"
         class="rounded-circle"
         width="30"
         height="30"
       />
-      <span>Profile</span>
+      <span>{{ user?.username }}</span>
     </a>
   </div>
 </div>

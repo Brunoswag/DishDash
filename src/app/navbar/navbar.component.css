@@ -1,9 +1,9 @@
 .sidebar {
-  height: 100%;
-  width: 250px;
+  display: flex;
+  flex-direction: column;
+  /* Subtract the top navbar height (assumed 56px - adjust if different) */
+  height: calc(100vh - 56px);
   position: relative;
-  transition: width 0.3s ease;
-  background-color: #f8f9fa;
 
   &.collapsed {
     width: 80px;
@@ -11,6 +11,15 @@
     .nav-link span {
       display: none;
     }
+  }
+
+  .nav {
+    flex-grow: 1;
+  }
+  .profile {
+    margin-top: auto;
+    padding-bottom: 1rem;
+    width: 100%;
   }
 
   .toggle-btn {
