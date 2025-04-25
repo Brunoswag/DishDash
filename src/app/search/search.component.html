@@ -15,55 +15,57 @@
   <!-- Search Form -->
   <div class="col-6 mx-auto">
     <form class="d-flex" role="search">
-      <input
-        class="form-control me-2 search-bar"
-        type="search"
-        placeholder="Search"
-        aria-label="Search"
-      />
+      <div class="searchContainer">
+        <input
+          class="form-control me-2 search-bar container-contents"
+          type="search"
+          placeholder="Search"
+          aria-label="Search"
+        />
 
-      <div class="dropdown">
-        <button
-          class="btn btn-outline-secondary dropdown-toggle"
-          type="button"
-          id="filterDropdown"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
-          <i class="bi bi-funnel"></i>
-        </button>
-        <ul
-          class="dropdown-menu dropdown-menu-end p-3"
-          style="min-width: 200px"
-          aria-labelledby="filterDropdown"
-        >
-          <li>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                value=""
-                id="filter1"
-              />
-              <label class="form-check-label" for="filter1"
-                >Filter by Date</label
-              >
-            </div>
-          </li>
-          <li>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                value=""
-                id="filter2"
-              />
-              <label class="form-check-label" for="filter2"
-                >Filter by Category</label
-              >
-            </div>
-          </li>
-        </ul>
+        <div class="dropdown">
+          <button
+            class="btn btn-outline-secondary dropdown-toggle container-contents"
+            type="button"
+            id="filterDropdown"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i class="bi bi-funnel"></i>
+          </button>
+          <ul
+            class="dropdown-menu dropdown-menu-end p-3"
+            style="min-width: 200px"
+            aria-labelledby="filterDropdown"
+          >
+            <li>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="filter1"
+                />
+                <label class="form-check-label" for="filter1"
+                  >Filter by Date</label
+                >
+              </div>
+            </li>
+            <li>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="filter2"
+                />
+                <label class="form-check-label" for="filter2"
+                  >Filter by Category</label
+                >
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     </form>
   </div>

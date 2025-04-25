@@ -3,3 +3,16 @@
   justify-content: center;
   align-items: center;
 }
+
+.searchContainer {
+  width: 900px;
+  background-color: white;
+  display: flex;
+  margin: auto;
+  border-radius: 8px;
+  border: 1px solid #efefef; /* Light grey border */
+}
+
+.container-contents {
+  border: none;
+}
