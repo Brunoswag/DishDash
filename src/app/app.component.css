@@ -1,16 +1,29 @@
 .main {
-    display: flex;
-    min-height: 100vh;
-  }
-  
-  .nav-bar {
-    width: 250px;
-    flex-shrink: 0;
-    border-right: 1px solid #dee2e6;
-  }
-  
-  .content-area {
-    flex-grow: 1;
-    padding: 20px;
-    overflow-y: auto;
-  }
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.search-container {
+  width: 100%;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.side-nav {
+  height: 100%;
+  border-right: 1px solid #dee2e6;
+}
+
+.main-content {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+}

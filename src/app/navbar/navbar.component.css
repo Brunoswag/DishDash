@@ -1,31 +1,60 @@
 .sidebar {
-    width: 250px;
-  
-    @media (max-width: 1200px) {
-      width: 80px;
-      .nav-link span,
-      .logo img {
-        display: none;
-      }
-    }
-  
-    .logo img {
-      height: 40px;
-    }
-  
-    .nav-link {
-      font-size: 1rem;
-      padding: 0.75rem 1rem;
-      transition: background 0.2s;
-      border-radius: 8px;
-  
-      &:hover {
-        background-color: #f2f2f2;
-      }
-  
-      i {
-        font-size: 1.25rem;
-      }
+  height: 100%;
+  width: 250px;
+  position: relative;
+  transition: width 0.3s ease;
+  background-color: #f8f9fa;
+
+  &.collapsed {
+    width: 80px;
+
+    .nav-link span {
+      display: none;
     }
   }
-  
+
+  .toggle-btn {
+    position: absolute;
+    right: -40px;
+    top: 10px;
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    background-color: #f8f9fa;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      background-color: #e9ecef;
+    }
+  }
+
+  .nav-link {
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+    transition: background 0.2s;
+    border-radius: 8px;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    &:hover {
+      background-color: #f2f2f2;
+    }
+
+    i {
+      font-size: 1.25rem;
+    }
+
+    span {
+      transition: opacity 0.3s ease;
+    }
+  }
+}
