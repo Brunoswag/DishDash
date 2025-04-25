@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-
+import { RecipeFormComponent } from '../recipe-form/recipe-form.component'; 
 @Component({
   selector: 'app-recipe-detail',
   imports: [],
@@ -7,8 +7,9 @@ import { Component } from '@angular/core';
   styleUrl: './recipe-detail.component.css'
 })
 export class RecipeDetailComponent {
-  recipeID = null;
-  
+  recipeID: number = 0;
+  recipeAuthor: number = 0;
+
   thumbnailImage: String = '';
   optionalImages: String[] = [];
   recipeName: String = '';
