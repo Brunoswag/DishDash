@@ -5,6 +5,14 @@
   </a>
 
   <!-- Navigation Links -->
+  @for (item of navItems; track item) {
+  <li class="nav-item mb-3">
+    <a href="#" class="nav-link d-flex align-items-center gap-3 text-dark">
+      <i [class]="item.icon"></i>
+      <span class="d-none d-xl-inline">{{ item.label }}</span>
+    </a>
+  </li>
+  }
 
   <!-- Profile -->
   <div class="mt-auto">
