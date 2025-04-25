@@ -1,0 +1,16 @@
+.main {
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  .nav-bar {
+    width: 250px;
+    flex-shrink: 0;
+    border-right: 1px solid #dee2e6;
+  }
+  
+  .content-area {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+  }

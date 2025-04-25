@@ -9,9 +9,11 @@ import { authGuard } from './auth.guard';
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
+  { path: 'login', component: LoginComponent }, // Should always be un-protected
+
+  // Protected routes
   { path: 'recipe/:id', component: RecipeComponent, canActivate: [authGuard] },
 
-  // all protected routes should go here with authGuard
-  { path: '**', redirectTo: 'home' }, // Catch all route goes to home instead of a 404 page!
+  // Catch all route goes to home instead of a 404 page!
+  { path: '**', redirectTo: 'home' },
 ];
