@@ -28,7 +28,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     { icon: 'bi bi-house', label: 'Home', route: '/home' },
     { icon: 'bi bi-search', label: 'Search', route: '/search' },
     { icon: 'bi bi-bookmark', label: 'Saved', route: '/saved' },
-    { icon: 'bi bi-plus-square', label: 'Add', route: '/add' }
+    { icon: 'bi bi-plus-square', label: 'Add', route: '/add' },
 
   ];
 
