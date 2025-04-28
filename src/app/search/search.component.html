@@ -1,6 +1,6 @@
-<div class="row mb-1 align-items-center">
-  <!-- Title and Icon area with navbar toggle -->
-  <div class="col-auto d-flex align-items-center">
+<div class="search-header">
+  <!-- Left section with title and toggle -->
+  <div class="d-flex align-items-center">
     <button
       class="btn btn-outline-secondary me-2"
       type="button"
@@ -12,8 +12,8 @@
     <span class="fw-bold fs-4">DishDash</span>
   </div>
 
-  <!-- Search Form -->
-  <div class="col-6 mx-auto">
+  <!-- Center section with search -->
+  <div class="col-6">
     <form class="d-flex" role="search">
       <div class="searchContainer">
         <input
@@ -46,9 +46,7 @@
                   value=""
                   id="filter1"
                 />
-                <label class="form-check-label" for="filter1"
-                  >Filter by Date</label
-                >
+                <label class="form-check-label" for="filter1">Filter by Date</label>
               </div>
             </li>
             <li>
@@ -59,14 +57,36 @@
                   value=""
                   id="filter2"
                 />
-                <label class="form-check-label" for="filter2"
-                  >Filter by Category</label
-                >
+                <label class="form-check-label" for="filter2">Filter by Category</label>
               </div>
             </li>
           </ul>
         </div>
       </div>
     </form>
+  </div>
+
+  <!-- Right section with profile -->
+  <div class="profile">
+    <div *ngIf="user">
+      <a routerLink="/user-profile" class="nav-link d-flex align-items-center gap-2">
+        <img
+          [src]="getProfilePicture()"
+          [alt]="user.username + '\'s profile picture'"
+          class="profile-img"
+        />
+        <span>{{ user.username }}</span>
+      </a>
+    </div>
+    <div *ngIf="!user">
+      <a routerLink="/login" class="nav-link d-flex align-items-center gap-2">
+        <img
+          src="assets/default-avatar.png"
+          alt="Default profile picture"
+          class="profile-img"
+        />
+        <span>Login</span>
+      </a>
+    </div>
   </div>
 </div>
