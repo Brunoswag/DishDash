@@ -11,6 +11,18 @@
     .nav-link span {
       display: none;
     }
+
+    /* Add this to ensure profile section alignment when collapsed */
+    .profile {
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Ensure the profile link maintains proper spacing when collapsed */
+    .profile .nav-link {
+      padding: 0;
+      justify-content: center;
+    }
   }
 
   .nav {
@@ -66,4 +78,14 @@
       transition: opacity 0.3s ease;
     }
   }
+}
+
+.profile img {
+  min-width: 30px;
+  min-height: 30px;
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  border-radius: 50%;
+  flex-shrink: 0; /* Prevents the image from shrinking */
 }

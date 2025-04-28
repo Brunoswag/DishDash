@@ -3,7 +3,7 @@
   <ul class="nav nav-pills flex-column w-100">
     @for (item of navItems; track item) {
     <li class="nav-item mb-3">
-      <a href="#" class="nav-link d-flex align-items-center gap-3 text-dark">
+      <a [routerLink]="item.route" class="nav-link d-flex align-items-center gap-3 text-dark">
         <i [class]="item.icon"></i>
         <span>{{ item.label }}</span>
       </a>
@@ -13,15 +13,25 @@
 
   <!-- Profile -->
   <div class="profile">
-    <a href="#" class="nav-link d-flex align-items-center gap-3 text-dark">
-      <img
-        [src]="user?.profilePicture"
-        alt="Profile picture"
-        class="rounded-circle"
-        width="30"
-        height="30"
-      />
-      <span>{{ user?.username }}</span>
-    </a>
+    <div *ngIf="user">
+      <a href="#" class="nav-link d-flex align-items-center gap-3 text-dark">
+        <img
+          [src]="getProfilePicture()"
+          [alt]="user.username + '\'s profile picture'"
+          class="profile-img"
+        />
+        <span>{{ user.username }}</span>
+      </a>
+    </div>
+    <div *ngIf="!user">
+      <a routerLink="/login" class="nav-link d-flex align-items-center gap-3 text-dark">
+        <img
+          src="assets/default-avatar.png"
+          alt="Default profile picture"
+          class="profile-img"
+        />
+        <span>Login</span>
+      </a>
+    </div>
   </div>
 </div>

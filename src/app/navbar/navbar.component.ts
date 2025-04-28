@@ -1,42 +1,55 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NavService } from '../navbar.service';
+import { RouterModule } from '@angular/router';
 import { UserService } from '../services/user.service';
+import { NavService } from '../navbar.service';
+import { User } from '../models/user';
+import { Subscription, Observable } from 'rxjs';
 
 interface NavItem {
   icon: string;
   label: string;
+  route?: string;
 }
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css'], // Fixed typo: styleUrl -> styleUrls
+  styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit {
-  user: { username: string; profilePicture: string } | null = null;
+export class NavbarComponent implements OnInit, OnDestroy {
+  user: User | null = null;
+  private userSubscription?: Subscription;
+  isExpanded$!: Observable<boolean>;
 
   navItems: NavItem[] = [
-    { icon: 'bi bi-house', label: 'Home' },
-    { icon: 'bi bi-heart', label: 'Favorites' },
-    { icon: 'bi bi-clock-history', label: 'History' },
-    { icon: 'bi bi-gear', label: 'Settings' },
+    { icon: 'bi bi-house', label: 'Home', route: '/home' },
+    { icon: 'bi bi-search', label: 'Search', route: '/search' },
+    { icon: 'bi bi-bookmark', label: 'Saved', route: '/saved' }
   ];
 
-  readonly isExpanded$: any; // Add a proper type if possible (e.g., Observable<boolean>)
-
-  constructor(private userService: UserService, private navService: NavService) {
+  constructor(
+    private userService: UserService,
+    private navService: NavService
+  ) {
     this.isExpanded$ = this.navService.isExpanded$;
   }
 
-  toggleSidebar() {
-    this.navService.toggleSidebar();
+  ngOnInit() {
+    this.userSubscription = this.userService.currentUser$.subscribe(user => {
+      this.user = user;
+    });
   }
 
-  ngOnInit(): void {
-    this.user = this.userService.getUser();
-    // console.log('User data:', this.user);
+  ngOnDestroy() {
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
+  }
+
+  getProfilePicture(): string {
+    return this.userService.getProfilePicture(this.user);
   }
 }
