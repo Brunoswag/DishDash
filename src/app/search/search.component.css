@@ -37,3 +37,30 @@
   width: 100%;
   padding: 0.5rem 1rem;
 }
+
+/* Add these styles */
+.profile-dropdown {
+  width: 250px;
+  padding: 8px 0;
+}
+
+.dropdown-item {
+  padding: 8px 16px;
+}
+
+.dropdown-item i {
+  font-size: 1.1rem;
+}
+
+.dropdown-header {
+  padding: 0;
+  border-bottom: none;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+}
+
+.dropdown-item .bi-chevron-right {
+  font-size: 0.8rem;
+}

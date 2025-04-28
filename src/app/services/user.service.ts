@@ -76,7 +76,21 @@ export class UserService {
     return this.currentUserSubject.value;
   }
 
+  signOut(): void {
+    // Clear the current user
+    this.currentUserSubject.next(null);
+    
+    // Clear any stored authentication tokens
+    localStorage.removeItem('auth_token');
+    
+    // You might want to clear other user-related data from localStorage
+    localStorage.removeItem('user_data');
+  }
+
   getProfilePicture(user: User | null): string {
-    return user?.profilePicture || this.DEFAULT_PROFILE_PICTURE;
+    if (user && user.profilePicture) {
+      return user.profilePicture;
+    }
+    return 'assets/default-avatar.png';
   }
 }

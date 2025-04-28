@@ -1,6 +1,6 @@
 // Spencer Lommel 4/25/25
 
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -15,6 +15,7 @@ import {
   createUserWithEmailAndPassword,
 } from '@angular/fire/auth';
 import { UserService } from '../services/user.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -23,8 +24,9 @@ import { UserService } from '../services/user.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   private auth: Auth = inject(Auth);
+  private userSubscription?: Subscription;
   authForm!: FormGroup;
   isLoginMode = true;
   loading = false;
@@ -40,6 +42,21 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     console.log('LoginComponent initialized');
     this.initForm();
+
+    // Subscribe to user changes
+    this.userSubscription = this.userService.currentUser$.subscribe(user => {
+      if (user) {
+        // If user is already logged in, redirect to home
+        this.router.navigate(['/home']);
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    // Clean up subscription when component is destroyed
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
   }
 
   get f() {

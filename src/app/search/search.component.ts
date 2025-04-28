@@ -5,6 +5,7 @@ import { NavService } from '../navbar.service';
 import { UserService } from '../services/user.service';
 import { User } from '../models/user';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-search',
@@ -19,7 +20,8 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   constructor(
     private navService: NavService,
-    private userService: UserService
+    private userService: UserService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -40,5 +42,10 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   getProfilePicture(): string {
     return this.userService.getProfilePicture(this.user);
+  }
+
+  signOut() {
+    this.userService.signOut();
+    this.router.navigate(['/login']);
   }
 }
