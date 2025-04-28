@@ -14,7 +14,7 @@
   <!-- Profile -->
   <div class="profile">
     <div *ngIf="user">
-      <a href="#" class="nav-link d-flex align-items-center gap-3 text-dark">
+      <a routerLink="user-profile" class="nav-link d-flex align-items-center gap-3 text-dark">
         <img
           [src]="getProfilePicture()"
           [alt]="user.username + '\'s profile picture'"
