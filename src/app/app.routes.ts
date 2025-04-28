@@ -8,6 +8,7 @@ import { authGuard } from './auth.guard';
 import { SearchComponent } from './search/search.component';
 import { RecipeListComponent } from './recipe-list/recipe-list.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { RecipeFormComponent } from './recipe-form/recipe-form.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -16,6 +17,7 @@ export const routes: Routes = [
   { path: 'search', component: SearchComponent },
   { path: 'saved', component: RecipeListComponent },
   { path: 'user-profile', component: UserProfileComponent },
+  { path: 'add', component: RecipeFormComponent },
 
   // Protected routes
   { path: 'recipe/:id', component: RecipeComponent, canActivate: [authGuard] },
