@@ -125,7 +125,11 @@ export class RecipeFormComponent {
         tags: this.tags,
         ingredients: this.recipeForm.value.ingredients,
         directions: this.recipeForm.value.directions,
-        createdAt: new Date()
+        createdAt: new Date(),
+        likes: 0, // Add initial values for required fields
+        saves: 0,
+        likedBy: [], // Initialize empty arrays
+        savedBy: []
       };
 
       const recipesRef = collection(this.firestore, 'recipes');

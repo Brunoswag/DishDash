@@ -60,6 +60,38 @@
   font-size: 1.2rem;
 }
 
+.stat-btn {
+  background: none;
+  border: none;
+  color: #cccccc;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.stat-btn:hover {
+  color: white;
+  transform: scale(1.1);
+}
+
+.stat-btn.active {
+  color: #ff4081;
+}
+
+.stat-btn.active i {
+  animation: pop 0.3s ease;
+}
+
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
 /* Add responsive breakpoints */
 @media (max-width: 1200px) {
   .recipe-grid {
