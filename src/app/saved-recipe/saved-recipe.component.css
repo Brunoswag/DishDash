@@ -1,9 +1,19 @@
-.recipe-grid {
-  columns: 3;
-  column-gap: 2rem;
+.saved-recipes-container {
   padding: 2rem;
   max-width: 1800px;
   margin: 0 auto;
+}
+
+h2 {
+  margin-bottom: 2rem;
+  font-family: 'Playfair Display', serif;
+  color: #333;
+}
+
+.recipe-grid {
+  columns: 3;
+  column-gap: 2rem;
+  width: 100%;
 }
 
 .recipe-card {
@@ -16,6 +26,7 @@
   transition: transform 0.2s ease;
   display: inline-block;
   width: 100%;
+  cursor: pointer;
 }
 
 .recipe-card:hover {
@@ -48,18 +59,6 @@
   gap: 1.5rem;
 }
 
-.stat {
-  color: #cccccc;
-  font-size: 1.1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.stat i {
-  font-size: 1.2rem;
-}
-
 .stat-btn {
   background: none;
   border: none;
@@ -79,16 +78,11 @@
 }
 
 .stat-btn.active {
-  color: #ff4081; /* Default active color for like button */
+  color: #ff4081;
 }
 
-/* Specific styling for save button when active */
 .stat-btn.active.bi-bookmark-fill,
 button.stat-btn:has(.bi-bookmark-fill).active {
-  color: #ffc107; /* Makes both icon and number yellow */
-}
-
-.stat-btn.active .bi-bookmark-fill {
   color: #ffc107;
 }
 
@@ -102,7 +96,24 @@ button.stat-btn:has(.bi-bookmark-fill).active {
   100% { transform: scale(1); }
 }
 
-/* Add responsive breakpoints */
+.no-recipes {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.loading {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+}
+
+.loading p {
+  font-size: 1.1rem;
+}
+
+/* Responsive breakpoints */
 @media (max-width: 1200px) {
   .recipe-grid {
     columns: 2;

@@ -1,17 +1,59 @@
 import { Injectable } from '@angular/core';
-import { Firestore, doc, updateDoc, arrayUnion, arrayRemove, increment } from '@angular/fire/firestore';
+import { Firestore, doc, updateDoc, arrayUnion, arrayRemove, increment, collection, query, where, getDocs, getDoc, DocumentData } from '@angular/fire/firestore';
 import { UserService } from './user.service';
 import { Recipe } from '../models/recipe';
-import { Observable, map, of } from 'rxjs';
+import { User } from '../models/user';
+import { Observable, from, map, of, switchMap, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RecipeService {
+  private savedRecipesSubject = new BehaviorSubject<Recipe[]>([]);
+  savedRecipes$ = this.savedRecipesSubject.asObservable();
+
   constructor(
     private firestore: Firestore,
     private userService: UserService
   ) {}
+
+  async loadSavedRecipes(): Promise<void> {
+    const currentUser = this.userService.getCurrentUser();
+    if (!currentUser) {
+      this.savedRecipesSubject.next([]);
+      return;
+    }
+
+    try {
+      // First get the user's document to get their saved recipe IDs
+      const userDoc = await getDoc(doc(this.firestore, 'users', currentUser.uid));
+      const userData = userDoc.data() as User;
+      const savedRecipeIds = userData?.savedRecipes || [];
+
+      if (savedRecipeIds.length === 0) {
+        this.savedRecipesSubject.next([]);
+        return;
+      }
+
+      // Then fetch all saved recipes
+      const recipesCollection = collection(this.firestore, 'recipes');
+      const savedRecipesQuery = query(
+        recipesCollection, 
+        where('__name__', 'in', savedRecipeIds)
+      );
+
+      const querySnapshot = await getDocs(savedRecipesQuery);
+      const recipes = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      } as Recipe));
+
+      this.savedRecipesSubject.next(recipes);
+    } catch (error) {
+      console.error('Error loading saved recipes:', error);
+      this.savedRecipesSubject.next([]);
+    }
+  }
 
   async toggleLike(recipe: Recipe): Promise<boolean> {
     const currentUser = this.userService.getCurrentUser();
@@ -62,6 +104,9 @@ export class RecipeService {
         savedRecipes: isSaved ? arrayRemove(recipe.id) : arrayUnion(recipe.id)
       });
 
+      // Reload saved recipes after toggling
+      await this.loadSavedRecipes();
+
       return true;
     } catch (error) {
       console.error('Error toggling save:', error);
@@ -77,5 +122,31 @@ export class RecipeService {
   isSavedByUser(recipe: Recipe): boolean {
     const currentUser = this.userService.getCurrentUser();
     return currentUser ? recipe.savedBy?.includes(currentUser.uid) ?? false : false;
+  }
+
+  async getSavedRecipes(): Promise<Recipe[]> {
+    const currentUser = this.userService.getCurrentUser();
+    if (!currentUser?.savedRecipes) return [];
+
+    try {
+      const recipesCollection = collection(this.firestore, 'recipes');
+      const savedRecipesQuery = query(
+        recipesCollection, 
+        where('__name__', 'in', currentUser.savedRecipes)
+      );
+
+      const querySnapshot = await getDocs(savedRecipesQuery);
+      return querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      } as Recipe));
+    } catch (error) {
+      console.error('Error fetching saved recipes:', error);
+      return [];
+    }
+  }
+
+  getSavedRecipes$(): Observable<Recipe[]> {
+    return from(this.getSavedRecipes());
   }
 }
