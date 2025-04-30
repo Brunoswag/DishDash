@@ -33,8 +33,9 @@
           <span>{{ user.username }}</span>
         </a>
       </div>
-    } @else {
-      <div *ngIf="!user">
+    }
+    @else {
+      <div>
         <a
           routerLink="/login"
           class="nav-link d-flex align-items-center gap-3 text-dark"
