@@ -1,12 +1,21 @@
 .recipe-container {
-    max-width: 800px;
+    max-width: 1200px;
     margin: 2rem auto;
     padding: 1rem;
 }
 
-.recipe-header {
-    text-align: center;
-    margin-bottom: 2rem;
+.recipe-header-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    align-items: start;
+}
+
+.recipe-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 .recipe-title {
@@ -14,30 +23,31 @@
     font-weight: 700;
     font-size: 2.5rem;
     color: #222;
-    margin: 0 0 1rem 0;
+    margin: 0;
+}
+
+.recipe-description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #666;
+}
+
+.recipe-image-container {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .recipe-image {
     width: 100%;
-    max-height: 500px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin: 2rem 0;
-}
-
-.recipe-content {
-    margin-top: 2rem;
-}
-
-.ingredients-section,
-.instructions-section {
-    margin-top: 2rem;
+    height: auto;
+    display: block;
+    border-radius: 12px;
 }
 
 .tags {
     display: flex;
     gap: 0.5rem;
-    justify-content: center;
     flex-wrap: wrap;
 }
 
@@ -47,6 +57,17 @@
     border-radius: 1rem;
     font-size: 0.875rem;
     color: #666;
+}
+
+.recipe-content {
+    margin-top: 2rem;
+    border-top: 1px solid #eee;
+    padding-top: 2rem;
+}
+
+.ingredients-section,
+.instructions-section {
+    margin-bottom: 2rem;
 }
 
 h2 {
@@ -74,4 +95,20 @@ li {
 
 .error {
     color: #dc3545;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .recipe-header-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .recipe-title {
+        font-size: 2rem;
+    }
+
+    .recipe-image-container {
+        order: -1;  /* needed for mobile compatibility I think */
+    }
 }

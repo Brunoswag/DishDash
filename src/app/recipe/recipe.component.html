@@ -1,13 +1,22 @@
 <div class="recipe-container" *ngIf="recipe">
-    <header class="recipe-header">
-        <h1 class="recipe-title">{{recipe.name}}</h1>
-        
-        <div class="tags" *ngIf="recipe.tags && recipe.tags.length > 0">
-            <span class="tag" *ngFor="let tag of recipe.tags">{{tag}}</span>
-        </div>
-    </header>
+    <div class="recipe-header-grid">
+        <div class="recipe-info">
+            <h1 class="recipe-title">{{recipe.name}}</h1>
+            
+            <div class="tags" *ngIf="recipe.tags && recipe.tags.length > 0">
+                <span class="tag" *ngFor="let tag of recipe.tags">{{tag}}</span>
+            </div>
 
-    <img *ngIf="recipe.imageUrl" [src]="recipe.imageUrl" [alt]="recipe.name" class="recipe-image">
+            <p class="recipe-description">{{recipe.description}}</p>
+        </div>
+
+        <div class="recipe-image-container">
+            <img *ngIf="recipe.imageUrl" 
+                 [src]="recipe.imageUrl" 
+                 [alt]="recipe.name" 
+                 class="recipe-image">
+        </div>
+    </div>
     
     <div class="recipe-content">
         <div class="ingredients-section">
