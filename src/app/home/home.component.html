@@ -1,9 +1,10 @@
 <div class="recipe-grid">
-  @for (recipe of recipes; track recipe.id) {
+  @for (recipe of recipes$ | async; track recipe.id) {
     <div class="recipe-card">
-      <img [src]="recipe.image" [alt]="recipe.title" class="recipe-image">
+      <img [src]="recipe.imageUrl" [alt]="recipe.name" class="recipe-image"
+           (error)="handleImageError($event)">
       <div class="recipe-info">
-        <h3 class="recipe-title">{{ recipe.title }}</h3>
+        <h3 class="recipe-title">{{ recipe.name }}</h3>
         <div class="recipe-stats">
           <span class="stat">
             <i class="bi bi-heart-fill"></i> {{ recipe.likes }}
@@ -13,6 +14,10 @@
           </span>
         </div>
       </div>
+    </div>
+  } @empty {
+    <div class="no-recipes">
+      <p>No recipes found. Be the first to add one!</p>
     </div>
   }
 </div>

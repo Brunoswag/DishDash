@@ -17,7 +17,7 @@ export const routes: Routes = [
   { path: 'search', component: SearchComponent },
   { path: 'saved', component: RecipeListComponent },
   { path: 'user-profile', component: UserProfileComponent },
-  { path: 'add', component: RecipeFormComponent },
+  { path: 'new-recipe', component: RecipeFormComponent },
 
   // Protected routes
   { path: 'recipe/:id', component: RecipeComponent, canActivate: [authGuard] },

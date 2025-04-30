@@ -38,6 +38,11 @@
   padding: 0.5rem 1rem;
 }
 
+.search-header a:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
 /* Add these styles */
 .profile-dropdown {
   width: 250px;
