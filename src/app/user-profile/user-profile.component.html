@@ -1,1 +1,40 @@
-<p>user-profile works!</p>
+@if (user) {
+  <div class="profile-container">
+    <div class="profile-header">
+      <img
+        [src]="getProfilePicture()"
+        [alt]="user.username + '\'s profile picture'"
+        class="profile-pic"
+      />
+      <div class="info-box">
+        <div class="rating">
+          @for (star of [].constructor(rating); track $index) {
+            <span>★</span>
+          }
+          <div>
+            <h2>{{ user.username }}</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="details-box">
+      <h3>Details</h3>
+      <p>
+        <strong>Account creation date:</strong>
+        {{ user.createdAt | date: "longDate" }}
+      </p>
+      <p><strong>Number of recipes created:</strong> {{ recipesCreated }}</p>
+      <p><strong>Number of recipes saved:</strong> {{ recipesSaved }}</p>
+    </div>
+
+    <div class="recipe-section">
+      <div class="recipe-box">
+        <h3>Top Recipes</h3>
+      </div>
+      <div class="recipe-box">
+        <h3>Saved Recipes</h3>
+      </div>
+    </div>
+  </div>
+}
