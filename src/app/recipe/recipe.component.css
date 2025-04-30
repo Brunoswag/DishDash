@@ -1,39 +1,37 @@
 .recipe-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
 }
 
 .recipe-image {
-    width: 100%;
-    max-height: 400px;
-    object-fit: cover;
-    border-radius: 8px;
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
 .recipe-title {
-    margin: 20px 0;
-    font-size: 2.5em;
+  margin: 1rem 0;
+  font-size: 2rem;
 }
 
 .recipe-info {
-    margin-top: 20px;
+  margin-top: 1rem;
 }
 
 .ingredients, .instructions {
-    margin-top: 30px;
-}
-
-.ingredients ul {
-    list-style: none;
-    padding-left: 0;
-}
-
-.instructions ol {
-    padding-left: 20px;
+  margin-top: 2rem;
 }
 
 .description {
-    font-size: 1.1em;
-    line-height: 1.6;
+  line-height: 1.6;
+}
+
+ul, ol {
+  padding-left: 1.5rem;
+}
+
+li {
+  margin: 0.5rem 0;
 }

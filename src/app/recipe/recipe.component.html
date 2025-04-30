@@ -1,15 +1,15 @@
 <div class="recipe-container" *ngIf="recipe">
-    <img *ngIf="recipe.imageUrl" [src]="recipe.imageUrl" [alt]="recipe.title" class="recipe-image">
+    <img *ngIf="recipe?.imageUrl" [src]="recipe?.imageUrl" [alt]="recipe?.title || ''" class="recipe-image">
     
-    <h1 class="recipe-title">{{recipe.title}}</h1>
+    <h1 class="recipe-title">{{recipe?.title}}</h1>
     
     <div class="recipe-info">
-        <p class="description">{{recipe.description}}</p>
+        <p class="description">{{recipe?.description}}</p>
         
         <div class="ingredients">
             <h2>Ingredients</h2>
             <ul>
-                <li *ngFor="let ingredient of recipe.ingredients">
+                <li *ngFor="let ingredient of recipe?.ingredients || []">
                     {{ingredient.amount}} {{ingredient.unit}} {{ingredient.name}}
                 </li>
             </ul>
@@ -18,7 +18,7 @@
         <div class="instructions">
             <h2>Instructions</h2>
             <ol>
-                <li *ngFor="let step of recipe.instructions">{{step}}</li>
+                <li *ngFor="let step of recipe?.instructions || []">{{step}}</li>
             </ol>
         </div>
     </div>

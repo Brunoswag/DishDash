@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { FirebaseService } from '../services/firebase.service';
+import { FirebaseService } from '../firebase.service';
 
 interface Recipe {
   id: string;
@@ -17,8 +18,10 @@ interface Recipe {
 
 @Component({
   selector: 'app-recipe',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './recipe.component.html',
-  styleUrls: ['./recipe.component.css']
+  styleUrl: './recipe.component.css'
 })
 export class RecipeComponent implements OnInit {
   recipe: Recipe | null = null;
@@ -36,6 +39,12 @@ export class RecipeComponent implements OnInit {
   }
 
   private async loadRecipe(id: string): Promise<void> {
-    this.recipe = await this.firebaseService.getRecipeById(id);
+    try {
+      const recipeData = await this.firebaseService.getRecipeById(id);
+      // Type assertion to ensure the data matches our Recipe interface
+      this.recipe = recipeData as Recipe;
+    } catch (error) {
+      console.error('Error loading recipe:', error);
+    }
   }
 }

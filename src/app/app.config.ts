@@ -8,6 +8,7 @@ import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { provideStorage, getStorage } from '@angular/fire/storage';
 import { firebaseConfig } from '../environments/environment';
 import { routes } from './app.routes';
+import { FirebaseService } from '../app/firebase.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,5 +18,6 @@ export const appConfig: ApplicationConfig = {
     provideStorage(() => getStorage()),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
+    FirebaseService
   ],
 };
