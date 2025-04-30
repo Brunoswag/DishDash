@@ -84,8 +84,9 @@
 
     <!-- Submit Button -->
     <div class="mb-3">
-      <button type="submit" class="btn btn-primary" [disabled]="!recipeForm.valid">
-        Create Recipe
+      <button type="submit" class="btn btn-primary" [disabled]="!recipeForm.valid || loading">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+        {{ loading ? 'Creating Recipe...' : 'Create Recipe' }}
       </button>
     </div>
   </form>
