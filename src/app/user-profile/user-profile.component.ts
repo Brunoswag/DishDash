@@ -21,12 +21,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   recipesCreated = 0; //change once recipes created is implemented
   recipesSaved = 0;
 
-  formattedDate = this.user?.createdAt.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
-
   constructor(
       private userService: UserService,
     ) {
