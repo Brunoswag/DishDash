@@ -13,15 +13,15 @@ import { RecipeFormComponent } from './recipe-form/recipe-form.component';
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
-  { path: 'login', component: LoginComponent }, // Should always be un-protected
+  { path: 'login', component: LoginComponent },
   { path: 'search', component: SearchComponent },
   { path: 'saved', component: RecipeListComponent },
   { path: 'user-profile', component: UserProfileComponent },
   { path: 'new-recipe', component: RecipeFormComponent },
-
-  // Protected routes
-  { path: 'recipe/:id', component: RecipeComponent, canActivate: [authGuard] },
-
-  // Catch all route goes to home instead of a 404 page!
-  { path: '**', redirectTo: 'home' },
+  { 
+    path: 'recipe/:id', 
+    component: RecipeComponent,
+    canActivate: [authGuard]
+  },
+  { path: '**', redirectTo: 'home' }
 ];

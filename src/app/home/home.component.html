@@ -1,6 +1,6 @@
 <div class="recipe-grid">
   @for (recipe of recipes$ | async; track recipe.id) {
-    <div class="recipe-card">
+    <div class="recipe-card" [routerLink]="['/recipe', recipe.id]" role="button">
       <img [src]="recipe.imageUrl" [alt]="recipe.name" class="recipe-image"
            (error)="handleImageError($event)">
       <div class="recipe-info">

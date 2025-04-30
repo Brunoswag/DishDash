@@ -1,25 +1,37 @@
 <div class="recipe-container" *ngIf="recipe">
-    <img *ngIf="recipe?.imageUrl" [src]="recipe?.imageUrl" [alt]="recipe?.title || ''" class="recipe-image">
-    
-    <h1 class="recipe-title">{{recipe?.title}}</h1>
-    
-    <div class="recipe-info">
-        <p class="description">{{recipe?.description}}</p>
+    <header class="recipe-header">
+        <h1 class="recipe-title">{{recipe.name}}</h1>
         
-        <div class="ingredients">
+        <div class="tags" *ngIf="recipe.tags && recipe.tags.length > 0">
+            <span class="tag" *ngFor="let tag of recipe.tags">{{tag}}</span>
+        </div>
+    </header>
+
+    <img *ngIf="recipe.imageUrl" [src]="recipe.imageUrl" [alt]="recipe.name" class="recipe-image">
+    
+    <div class="recipe-content">
+        <div class="ingredients-section">
             <h2>Ingredients</h2>
             <ul>
-                <li *ngFor="let ingredient of recipe?.ingredients || []">
-                    {{ingredient.amount}} {{ingredient.unit}} {{ingredient.name}}
+                <li *ngFor="let ingredient of recipe.ingredients">
+                    {{ingredient.quantity}} {{ingredient.unit}} {{ingredient.name}}
                 </li>
             </ul>
         </div>
         
-        <div class="instructions">
+        <div class="instructions-section">
             <h2>Instructions</h2>
             <ol>
-                <li *ngFor="let step of recipe?.instructions || []">{{step}}</li>
+                <li *ngFor="let step of recipe.directions">{{step}}</li>
             </ol>
         </div>
     </div>
+</div>
+
+<div class="loading" *ngIf="loading">
+    Loading recipe...
+</div>
+
+<div class="error" *ngIf="error">
+    {{error}}
 </div>

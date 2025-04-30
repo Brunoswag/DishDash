@@ -9,23 +9,24 @@ export class FirebaseService {
 
   async getRecipeById(id: string) {
     try {
+      console.log('Fetching recipe with ID:', id); // Debug log
       const docRef = doc(this.firestore, 'recipes', id);
       const docSnap = await getDoc(docRef);
       
-      if (docSnap.exists()) {
-        return { 
-          id: docSnap.id,
-          title: docSnap.data()['title'] || '',
-          description: docSnap.data()['description'] || '',
-          imageUrl: docSnap.data()['imageUrl'],
-          ingredients: docSnap.data()['ingredients'] || [],
-          instructions: docSnap.data()['instructions'] || []
-        };
-      } else {
-        throw new Error('Recipe not found');
+      if (!docSnap.exists()) {
+        console.log('No recipe found with ID:', id); // Debug log
+        return null;
       }
+
+      const data = docSnap.data();
+      console.log('Recipe data from Firestore:', data); // Debug log
+      
+      return {
+        id: docSnap.id,
+        ...data
+      };
     } catch (error) {
-      console.error('Error getting recipe:', error);
+      console.error('Error in getRecipeById:', error);
       throw error;
     }
   }
