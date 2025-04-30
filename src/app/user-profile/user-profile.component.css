@@ -1,0 +1,59 @@
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 1000px;
+    margin: auto;
+    padding: 2rem;
+    font-family: Arial, sans-serif;
+  }
+  
+  .profile-header {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  
+  .profile-pic {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    filter: drop-shadow(0 0 0.25rem black);
+  }
+  
+  .rating {
+    font-size: 3.25rem;
+    color: black;
+  }
+  
+  .info-box {
+    flex: 1;
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  
+  .details-box {
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  
+  .recipe-section {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  
+  .recipe-box {
+    flex: 1;
+    min-width: 280px;
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  
