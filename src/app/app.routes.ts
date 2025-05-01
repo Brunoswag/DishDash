@@ -9,6 +9,7 @@ import { SearchComponent } from './search/search.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { RecipeFormComponent } from './recipe-form/recipe-form.component';
 import { SavedRecipeComponent } from './saved-recipe/saved-recipe.component'; 
+import { LikedRecipeComponent } from './liked/liked.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -16,6 +17,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'search', component: SearchComponent },
   { path: 'saved', component: SavedRecipeComponent },
+  {path: 'liked', component: LikedRecipeComponent },
   { path: 'user-profile', component: UserProfileComponent },
   { path: 'new-recipe', component: RecipeFormComponent },
   { 

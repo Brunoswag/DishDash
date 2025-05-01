@@ -11,6 +11,9 @@ import { Observable, from, map, of, switchMap, BehaviorSubject } from 'rxjs';
 export class RecipeService {
   private savedRecipesSubject = new BehaviorSubject<Recipe[]>([]);
   savedRecipes$ = this.savedRecipesSubject.asObservable();
+  
+  private likedRecipesSubject = new BehaviorSubject<Recipe[]>([]);
+  likedRecipes$ = this.likedRecipesSubject.asObservable();
 
   constructor(
     private firestore: Firestore,
@@ -55,6 +58,44 @@ export class RecipeService {
     }
   }
 
+  async loadLikedRecipes(): Promise<void> {
+    const currentUser = this.userService.getCurrentUser();
+    if (!currentUser) {
+      this.likedRecipesSubject.next([]);
+      return;
+    }
+
+    try {
+      // First get the user's document to get their liked recipe IDs
+      const userDoc = await getDoc(doc(this.firestore, 'users', currentUser.uid));
+      const userData = userDoc.data() as User;
+      const likedRecipeIds = userData?.likedRecipes || [];
+
+      if (likedRecipeIds.length === 0) {
+        this.likedRecipesSubject.next([]);
+        return;
+      }
+
+      // Then fetch all liked recipes
+      const recipesCollection = collection(this.firestore, 'recipes');
+      const likedRecipesQuery = query(
+        recipesCollection, 
+        where('__name__', 'in', likedRecipeIds)
+      );
+
+      const querySnapshot = await getDocs(likedRecipesQuery);
+      const recipes = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      } as Recipe));
+
+      this.likedRecipesSubject.next(recipes);
+    } catch (error) {
+      console.error('Error loading liked recipes:', error);
+      this.likedRecipesSubject.next([]);
+    }
+  }
+
   async toggleLike(recipe: Recipe): Promise<boolean> {
     const currentUser = this.userService.getCurrentUser();
     if (!currentUser || !recipe.id) return false;
@@ -75,6 +116,9 @@ export class RecipeService {
       await updateDoc(userRef, {
         likedRecipes: isLiked ? arrayRemove(recipe.id) : arrayUnion(recipe.id)
       });
+
+      // Reload liked recipes after toggling
+      await this.loadLikedRecipes();
 
       return true;
     } catch (error) {
