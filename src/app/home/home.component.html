@@ -6,12 +6,18 @@
       <div class="recipe-info">
         <h3 class="recipe-title">{{ recipe.name }}</h3>
         <div class="recipe-stats">
-          <span class="stat">
-            <i class="bi bi-heart-fill"></i> {{ recipe.likes }}
-          </span>
-          <span class="stat">
-            <i class="bi bi-bookmark-fill"></i> {{ recipe.saves }}
-          </span>
+          <button class="stat-btn" (click)="toggleLike(recipe, $event)" 
+                  [class.active]="isLiked(recipe)">
+            <i class="bi" [class.bi-heart-fill]="isLiked(recipe)" 
+               [class.bi-heart]="!isLiked(recipe)"></i>
+            {{ recipe.likes }}
+          </button>
+          <button class="stat-btn" (click)="toggleSave(recipe, $event)"
+                  [class.active]="isSaved(recipe)">
+            <i class="bi" [class.bi-bookmark-fill]="isSaved(recipe)"
+               [class.bi-bookmark]="!isSaved(recipe)"></i>
+            {{ recipe.saves }}
+          </button>
         </div>
       </div>
     </div>

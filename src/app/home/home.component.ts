@@ -5,6 +5,9 @@ import { Firestore, collection, collectionData, query, orderBy, startAt, endAt, 
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { FilterService } from '../filter.service';
+import { Recipe } from '../models/recipe';
+import { RecipeService } from '../services/recipe.service';
+import { UserService } from '../services/user.service';
 
 interface Recipe {
   id?: string;
@@ -27,7 +30,8 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private firestore: Firestore,
-    private filterService: FilterService
+    private filterService: FilterService,
+    private userService: UserService
   ) {
 
     this.filterService.searchTerm$.subscribe(searchText => {
@@ -55,6 +59,18 @@ export class HomeComponent implements OnInit {
           imageUrl: recipe['imageUrl'] || 'https://placehold.co/600x400/png?text=Recipe'
         })) as Recipe[]
       ),
+      
+  ngOnInit(): void {
+    const recipesCollection = collection(this.firestore, 'recipes');
+    this.recipes$ = collectionData(recipesCollection, { idField: 'id' }).pipe(
+      map(recipes => recipes.map(recipe => ({
+        ...recipe,
+        likes: recipe['likes'] || 0,
+        saves: recipe['saves'] || 0,
+        likedBy: recipe['likedBy'] || [],
+        savedBy: recipe['savedBy'] || [],
+        imageUrl: recipe['imageUrl'] || 'https://placehold.co/600x400/png?text=Recipe'
+      })) as Recipe[]),
       catchError(error => {
         console.error('Error fetching recipes:', error);
         return of([]);
@@ -68,9 +84,33 @@ export class HomeComponent implements OnInit {
       img.src = 'https://placehold.co/600x400/png?text=Recipe';
     }
   }
-
-  ngOnInit() {
-
   
+  async toggleLike(recipe: Recipe, event: Event): Promise<void> {
+    event.preventDefault();
+    event.stopPropagation();
+    if (!this.userService.getCurrentUser()) {
+      // Redirect to login if user is not authenticated
+      return;
+    }
+    await this.recipeService.toggleLike(recipe);
+  }
+
+  async toggleSave(recipe: Recipe, event: Event): Promise<void> {
+    event.preventDefault();
+    event.stopPropagation();
+    if (!this.userService.getCurrentUser()) {
+      // Redirect to login if user is not authenticated
+      return;
+    }
+    await this.recipeService.toggleSave(recipe);
+  }
+
+  isLiked(recipe: Recipe): boolean {
+    return this.recipeService.isLikedByUser(recipe);
+  }
+
+  isSaved(recipe: Recipe): boolean {
+    return this.recipeService.isSavedByUser(recipe);
+
   }
 }
