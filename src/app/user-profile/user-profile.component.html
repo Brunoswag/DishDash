@@ -29,7 +29,7 @@
       <h3>Details</h3>
       <p>
         <strong>Account creation date:</strong>
-        {{ profileUser.createdAt | date: "longDate" }}
+        {{ getCreatedAtDate() | date: "longDate" }}
       </p>
       <p><strong>Number of recipes created:</strong> {{ recipesCreated }}</p>
       <p><strong>Number of recipes saved:</strong> {{ recipesSaved }}</p>

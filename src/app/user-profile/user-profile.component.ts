@@ -5,6 +5,7 @@ import { User } from '../models/user';
 import { UserService } from '../services/user.service';
 import { RecipeService } from '../services/recipe.service';
 import { Subscription } from 'rxjs';
+import { Timestamp } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-user-profile',
@@ -71,6 +72,13 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   getProfilePicture(): string {
     return this.userService.getProfilePicture(this.profileUser);
+  }
+
+  getCreatedAtDate(): Date | null {
+    if (this.profileUser?.createdAt instanceof Timestamp) {
+      return this.profileUser.createdAt.toDate();
+    }
+    return null;
   }
 
   ngOnDestroy() {}

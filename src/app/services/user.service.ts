@@ -11,7 +11,8 @@ import {
   collection, 
   query, 
   where, 
-  getDocs 
+  getDocs,
+  Timestamp
 } from '@angular/fire/firestore';
 import { User } from '../models/user'
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -46,8 +47,8 @@ export class UserService {
       uid: firebaseUser.uid,
       email: firebaseUser.email!,
       username: username,
-      createdAt: new Date(),
-      lastLogin: new Date(),
+      createdAt: Timestamp.now(),  // Use Timestamp instead of Date
+      lastLogin: Timestamp.now(),   // Use Timestamp instead of Date
       profilePicture: this.DEFAULT_PROFILE_PICTURE
     };
 
