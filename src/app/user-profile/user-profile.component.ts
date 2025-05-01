@@ -22,6 +22,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   recipesCreated = 0;
   recipesSaved = 0;
   rating = 5;
+  private routeSubscription?: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -31,35 +32,38 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   ) {}
 
   async ngOnInit() {
-    try {
-      this.loading = true;
-      const username = this.route.snapshot.paramMap.get('username');
-      
-      if (!username) {
-        throw new Error('No username provided');
+    // Subscribe to route parameter changes
+    this.routeSubscription = this.route.paramMap.subscribe(async params => {
+      try {
+        this.loading = true;
+        const username = params.get('username');
+        
+        if (!username) {
+          throw new Error('No username provided');
+        }
+
+        const profileUser = await this.userService.getUserByUsername(username);
+        
+        if (!profileUser) {
+          throw new Error('User not found');
+        }
+
+        this.profileUser = profileUser;
+        
+        // Check if this is the current user's profile
+        const currentUser = this.userService.getCurrentUser();
+        this.isOwnProfile = currentUser?.uid === profileUser.uid;
+
+        // Load user's stats
+        await this.loadUserStats();
+      } catch (error) {
+        console.error('Error loading profile:', error);
+        this.error = 'Profile not found';
+        this.router.navigate(['/home']);
+      } finally {
+        this.loading = false;
       }
-
-      const profileUser = await this.userService.getUserByUsername(username);
-      
-      if (!profileUser) {
-        throw new Error('User not found');
-      }
-
-      this.profileUser = profileUser;
-      
-      // Check if this is the current user's profile
-      const currentUser = this.userService.getCurrentUser();
-      this.isOwnProfile = currentUser?.uid === profileUser.uid;
-
-      // Load user's stats
-      await this.loadUserStats();
-    } catch (error) {
-      console.error('Error loading profile:', error);
-      this.error = 'Profile not found';
-      this.router.navigate(['/home']);
-    } finally {
-      this.loading = false;
-    }
+    });
   }
 
   private async loadUserStats() {
@@ -81,5 +85,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     return null;
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() {
+    this.routeSubscription?.unsubscribe();
+  }
 }
