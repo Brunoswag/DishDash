@@ -1,16 +1,56 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { UserService } from '../services/user.service';
+import { NavService } from '../navbar.service';
+import { User } from '../models/user';
+import { Subscription, Observable } from 'rxjs';
+
+interface NavItem {
+  icon: string;
+  label: string;
+  route?: string;
+}
 
 @Component({
   selector: 'app-navbar',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule, RouterModule],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css'
+  styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent {
-  navItems = [
-    { label: 'Home', icon: 'bi bi-house-door' },
-    { label: 'Search', icon: 'bi bi-search' },
-    { label: 'Create', icon: 'bi bi-plus-square' },
-    { label: 'Settings', icon: 'bi bi-gear' }
+export class NavbarComponent implements OnInit, OnDestroy {
+  user: User | null = null;
+  private userSubscription?: Subscription;
+  isExpanded$!: Observable<boolean>;
+
+  navItems: NavItem[] = [
+    { icon: 'bi bi-house', label: 'Home', route: '/home' },
+    { icon: 'bi bi-bookmark', label: 'Saved', route: '/saved' },
+    { icon: 'bi bi-heart', label: 'Liked', route: '/liked' },
+    { icon: 'bi bi-plus-square', label: 'New', route: '/new-recipe' },
   ];
+
+  constructor(
+    private userService: UserService,
+    private navService: NavService
+  ) {
+    this.isExpanded$ = this.navService.isExpanded$;
+  }
+
+  ngOnInit() {
+    this.userSubscription = this.userService.currentUser$.subscribe(user => {
+      this.user = user;
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
+  }
+
+  getProfilePicture(): string {
+    return this.userService.getProfilePicture(this.user);
+  }
 }

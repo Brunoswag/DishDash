@@ -5,15 +5,23 @@ import { HomeComponent } from './home/home.component';
 import { RecipeComponent } from './recipe/recipe.component';
 import { LoginComponent } from './login/login.component';
 import { authGuard } from './auth.guard';
+import { SearchComponent } from './search/search.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { RecipeFormComponent } from './recipe-form/recipe-form.component';
+import { SavedRecipeComponent } from './saved-recipe/saved-recipe.component'; 
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
-  { path: 'login', component: LoginComponent }, // Should always be un-protected
-
-  // Protected routes
-  { path: 'recipe/:id', component: RecipeComponent, canActivate: [authGuard] },
-
-  // Catch all route goes to home instead of a 404 page!
-  { path: '**', redirectTo: 'home' },
+  { path: 'login', component: LoginComponent },
+  { path: 'search', component: SearchComponent },
+  { path: 'saved', component: SavedRecipeComponent },
+  { path: 'user-profile', component: UserProfileComponent },
+  { path: 'new-recipe', component: RecipeFormComponent },
+  { 
+    path: 'recipe/:id', 
+    component: RecipeComponent,
+    canActivate: [authGuard]
+  },
+  { path: '**', redirectTo: 'home' }
 ];

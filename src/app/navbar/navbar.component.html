@@ -1,33 +1,52 @@
 <div
-  class="d-flex flex-column align-items-center p-3 vh-100 border-end sidebar"
+  class="d-flex flex-column align-items-center p-3 border-end sidebar"
+  [class.collapsed]="!(isExpanded$ | async)"
 >
-  <!-- Logo -->
-  <!-- <a href="#" class="d-flex align-items-center mb-4 text-decoration-none logo">
-    <img src="" alt="" width="120" />
-  </a> -->
-
   <!-- Navigation Links -->
   <ul class="nav nav-pills flex-column w-100">
     @for (item of navItems; track item) {
-    <li class="nav-item mb-3">
-      <a href="#" class="nav-link d-flex align-items-center gap-3 text-dark">
-        <i [class]="item.icon"></i>
-        <span class="d-none d-xl-inline">{{ item.label }}</span>
-      </a>
-    </li>
+      <li class="nav-item mb-3">
+        <a
+          [routerLink]="item.route"
+          class="nav-link d-flex align-items-center gap-3 text-dark"
+        >
+          <i [class]="item.icon"></i>
+          <span>{{ item.label }}</span>
+        </a>
+      </li>
     }
   </ul>
+
   <!-- Profile -->
-  <div class="mt-auto">
-    <a href="#" class="fit-picture nav-link d-flex align-items-center gap-3 text-dark">
-      <img
-        src="../../assets/user_profile_picture.jpeg"
-        alt="Profile picture"
-        class="rounded-circle"
-        width="30"
-        height="30"
-      />
-      <span class="d-none d-xl-inline">Profile</span>
-    </a>
+  <div class="profile">
+    @if (user) {
+      <div>
+        <a
+          routerLink="user-profile"
+          class="nav-link d-flex align-items-center gap-3 text-dark"
+        >
+          <img
+            [src]="getProfilePicture()"
+            [alt]="user.username + '\'s profile picture'"
+            class="profile-img"
+          />
+          <span>{{ user.username }}</span>
+        </a>
+      </div>
+    } @else {
+      <div>
+        <a
+          routerLink="/login"
+          class="nav-link d-flex align-items-center gap-3 text-dark"
+        >
+          <img
+            src="assets/default-avatar.png"
+            alt="Default profile picture"
+            class="profile-img"
+          />
+          <span>Login</span>
+        </a>
+      </div>
+    }
   </div>
 </div>

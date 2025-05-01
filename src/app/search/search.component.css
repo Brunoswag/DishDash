@@ -3,3 +3,69 @@
   justify-content: center;
   align-items: center;
 }
+
+.searchContainer {
+  width: 900px;
+  background-color: white;
+  display: flex;
+  margin: auto;
+  border-radius: 8px;
+  border: 1px solid #efefef;
+}
+
+.container-contents {
+  border: none;
+}
+
+/* Add these new styles */
+.profile {
+  display: flex;
+  align-items: center;
+}
+
+.profile-img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.search-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.5rem 1rem;
+}
+
+.search-header a:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+/* Add these styles */
+.profile-dropdown {
+  width: 250px;
+  padding: 8px 0;
+}
+
+.dropdown-item {
+  padding: 8px 16px;
+}
+
+.dropdown-item i {
+  font-size: 1.1rem;
+}
+
+.dropdown-header {
+  padding: 0;
+  border-bottom: none;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+}
+
+.dropdown-item .bi-chevron-right {
+  font-size: 0.8rem;
+}
