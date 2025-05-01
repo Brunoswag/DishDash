@@ -56,4 +56,19 @@
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   }
-  
+
+  .loading, .error {
+    text-align: center;
+    padding: 3rem;
+    color: #666;
+    font-size: 1.1rem;
+  }
+
+  .error {
+    color: #dc3545;
+  }
+
+  .badge {
+    margin-left: 1rem;
+    vertical-align: middle;
+  }

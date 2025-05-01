@@ -17,8 +17,12 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'search', component: SearchComponent },
   { path: 'saved', component: SavedRecipeComponent },
-  {path: 'liked', component: LikedRecipeComponent },
+  { path: 'liked', component: LikedRecipeComponent },
   { path: 'user-profile', component: UserProfileComponent },
+  { 
+    path: 'profile/:username', 
+    component: UserProfileComponent 
+  },
   { path: 'new-recipe', component: RecipeFormComponent },
   { 
     path: 'recipe/:id', 

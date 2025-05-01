@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Firestore, doc, updateDoc, arrayUnion, arrayRemove, increment, collection, query, where, getDocs, getDoc, DocumentData } from '@angular/fire/firestore';
 import { UserService } from './user.service';
 import { Recipe } from '../models/recipe';
@@ -9,16 +9,14 @@ import { Observable, from, map, of, switchMap, BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class RecipeService {
+  private firestore: Firestore = inject(Firestore);
+  private userService: UserService = inject(UserService);
+
   private savedRecipesSubject = new BehaviorSubject<Recipe[]>([]);
   savedRecipes$ = this.savedRecipesSubject.asObservable();
   
   private likedRecipesSubject = new BehaviorSubject<Recipe[]>([]);
   likedRecipes$ = this.likedRecipesSubject.asObservable();
-
-  constructor(
-    private firestore: Firestore,
-    private userService: UserService
-  ) {}
 
   async loadSavedRecipes(): Promise<void> {
     const currentUser = this.userService.getCurrentUser();
@@ -192,5 +190,32 @@ export class RecipeService {
 
   getSavedRecipes$(): Observable<Recipe[]> {
     return from(this.getSavedRecipes());
+  }
+
+  async getRecipeAuthor(userId: string): Promise<User | null> {
+    try {
+      const userDoc = await getDoc(doc(this.firestore, 'users', userId));
+      if (!userDoc.exists()) return null;
+      return { ...userDoc.data(), uid: userDoc.id } as User;
+    } catch (error) {
+      console.error('Error fetching recipe author:', error);
+      return null;
+    }
+  }
+
+  async getRecipeCountByUser(userId: string): Promise<number> {
+    try {
+      const recipesCollection = collection(this.firestore, 'recipes');
+      const userRecipesQuery = query(
+        recipesCollection,
+        where('userId', '==', userId)
+      );
+
+      const querySnapshot = await getDocs(userRecipesQuery);
+      return querySnapshot.size;
+    } catch (error) {
+      console.error('Error getting recipe count:', error);
+      return 0;
+    }
   }
 }

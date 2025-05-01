@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { NavService } from '../navbar.service';
 import { User } from '../models/user';
@@ -33,7 +33,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   constructor(
     private userService: UserService,
-    private navService: NavService
+    private navService: NavService,
+    private router: Router
   ) {
     this.isExpanded$ = this.navService.isExpanded$;
   }
@@ -52,5 +53,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   getProfilePicture(): string {
     return this.userService.getProfilePicture(this.user);
+  }
+
+  navigateToProfile(): void {
+    if (this.user?.username) {
+      this.router.navigate(['/profile', this.user.username]);
+    }
   }
 }

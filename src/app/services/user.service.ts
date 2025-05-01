@@ -7,7 +7,11 @@ import {
   doc, 
   getDoc, 
   setDoc, 
-  updateDoc 
+  updateDoc, 
+  collection, 
+  query, 
+  where, 
+  getDocs 
 } from '@angular/fire/firestore';
 import { User } from '../models/user'
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -92,5 +96,26 @@ export class UserService {
       return user.profilePicture;
     }
     return 'assets/default-avatar.png';
+  }
+
+  async getUserByUsername(username: string): Promise<User | null> {
+    try {
+      const usersRef = collection(this.firestore, 'users');
+      const q = query(usersRef, where('username', '==', username));
+      const querySnapshot = await getDocs(q);
+      
+      if (querySnapshot.empty) {
+        return null;
+      }
+
+      const userDoc = querySnapshot.docs[0];
+      return {
+        ...userDoc.data(),
+        uid: userDoc.id
+      } as User;
+    } catch (error) {
+      console.error('Error fetching user by username:', error);
+      return null;
+    }
   }
 }

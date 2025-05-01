@@ -16,6 +16,7 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    height: 100%;
 }
 
 .recipe-title {
@@ -95,6 +96,31 @@ li {
 
 .error {
     color: #dc3545;
+}
+
+.recipe-author {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0.5rem 0;
+    transition: opacity 0.2s ease;
+}
+
+.recipe-author:hover {
+    opacity: 0.8;
+}
+
+.author-avatar {
+    width: 32px;      /* Made slightly smaller to fit better under title */
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.author-name {
+    font-size: 0.95rem;
+    color: #666;
+    font-weight: 500;
 }
 
 /* Responsive design */

@@ -3,6 +3,14 @@
         <div class="recipe-info">
             <h1 class="recipe-title">{{recipe.name}}</h1>
             
+            <!-- Make author info clickable -->
+            <div class="recipe-author" (click)="navigateToAuthorProfile($event)" style="cursor: pointer;">
+                <img [src]="getAuthorProfilePicture()" 
+                     [alt]="author?.username"
+                     class="author-avatar">
+                <span class="author-name">{{author?.username}}</span>
+            </div>
+            
             <div class="tags" *ngIf="recipe.tags && recipe.tags.length > 0">
                 <span class="tag" *ngFor="let tag of recipe.tags">{{tag}}</span>
             </div>

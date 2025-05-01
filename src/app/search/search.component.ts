@@ -48,4 +48,10 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.userService.signOut();
     this.router.navigate(['/login']);
   }
+
+  navigateToProfile(): void {
+    if (this.user?.username) {
+      this.router.navigate(['/profile', this.user.username]);
+    }
+  }
 }
