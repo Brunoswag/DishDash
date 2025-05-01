@@ -16,13 +16,14 @@
 
   <!-- Center section with search -->
   <div class="col-6">
-    <form class="d-flex" role="search">
+    <form (submit)="onSubmit($event)">
       <div class="searchContainer">
         <input
           class="form-control me-2 search-bar container-contents"
           type="search"
           placeholder="Search"
           aria-label="Search"
+          [formControl]="searchControl"
         />
 
         <div class="dropdown">
