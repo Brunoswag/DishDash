@@ -23,30 +23,28 @@ interface Recipe {
   styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit {
-  recipes$!: Observable<Recipe[]>;
+  recipes$!: Observable<any[]>;
 
   constructor(
     private firestore: Firestore,
     private filterService: FilterService
   ) {
+
     this.filterService.searchTerm$.subscribe(searchText => {
       this.fetchRecipes(searchText);
     });
+    
   
-    // Optional: load all recipes on first load
-    this.fetchRecipes('');
+
   }
   
   fetchRecipes(searchText: string) {
     console.log(searchText);  // Check what value is being passed to the query
 
     const recipesCollection = collection(this.firestore, 'recipes');
-    const q = query(
-      recipesCollection,
-      orderBy('name'),
-      startAt(searchText),
-      endAt(searchText + '\uf8ff')
-    );
+     let q = query(recipesCollection, orderBy('name'), startAt(searchText), endAt(searchText + "\uf8ff"));
+
+ 
   
     this.recipes$ = collectionData(q, { idField: 'id' }).pipe(
       map(recipes =>
@@ -71,5 +69,8 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+
+  
+  }
 }
