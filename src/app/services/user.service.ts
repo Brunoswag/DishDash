@@ -141,4 +141,8 @@ export class UserService {
       })
     );
   }
+
+  getCurrentUserSync(): User | null {
+    return this.currentUserSubject.value;
+  }
 }

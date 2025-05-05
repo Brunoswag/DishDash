@@ -123,6 +123,10 @@ li {
     font-weight: 500;
 }
 
+button {
+    margin: 5px;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
     .recipe-header-grid {

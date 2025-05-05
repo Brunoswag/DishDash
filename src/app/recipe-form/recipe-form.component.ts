@@ -1,19 +1,20 @@
 // Spencer Lommel 4/28/25
 
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Firestore, collection, addDoc } from '@angular/fire/firestore';
 import { Storage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
 import { UserService } from '../services/user.service';
 import { Recipe } from '../models/recipe';
 import { Ingredient } from '../models/ingredient';
+import { RecipeService } from '../services/recipe.service';
 
 @Component({
   selector: 'app-recipe-form',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
   templateUrl: './recipe-form.component.html',
   styleUrl: './recipe-form.component.css'
 })
@@ -29,6 +30,7 @@ export class RecipeFormComponent {
     private firestore: Firestore,
     private storage: Storage,
     private userService: UserService,
+    private recipeService: RecipeService,
     private router: Router
   ) {
     this.recipeForm = this.fb.group({
@@ -39,7 +41,7 @@ export class RecipeFormComponent {
       directions: this.fb.array([])
     });
   }
-
+  
   // Getters for form arrays
   get ingredients() {
     return this.recipeForm.get('ingredients') as FormArray;

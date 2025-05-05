@@ -77,4 +77,40 @@ export class RecipeComponent implements OnInit {
       this.router.navigate(['/profile', this.author.username]);
     }
   }
+
+  anDelete(): boolean {
+    const currentUser = this.userService.getCurrentUserSync(); // You may need a sync version
+    return currentUser?.uid === this.recipe?.userId;
+  }
+  
+  canDelete(): boolean {
+    const currentUser = this.userService.getCurrentUserSync(); // You may need a sync version
+    return currentUser?.uid === this.recipe?.userId;
+  }
+
+  async deleteRecipe(): Promise<void> {
+    if (!this.recipe?.id) return;
+  
+    const confirmDelete = confirm('Are you sure you want to delete this recipe?');
+    if (!confirmDelete) return;
+  
+    try {
+      await this.recipeService.deleteRecipe(this.recipe.id);
+      this.router.navigate(['/profile', this.author?.username || '']);
+    } catch (error) {
+      console.error('Failed to delete recipe:', error);
+      alert('Error deleting recipe');
+    }
+  }
+
+  canEdit(): boolean {
+    const currentUser = this.userService.getCurrentUserSync();
+    return currentUser?.uid === this.recipe?.userId;
+  }
+  
+  editRecipe(): void {
+    if (this.recipe?.id) {
+      this.router.navigate(['/new-recipe', this.recipe.id]);
+    }
+  }
 }

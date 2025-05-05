@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, doc, updateDoc, arrayUnion, arrayRemove, increment, collection, query, where, getDocs, getDoc, DocumentData, collectionData } from '@angular/fire/firestore';
+import { Firestore, doc, updateDoc, arrayUnion, arrayRemove, increment, collection, query, where, getDocs, getDoc, DocumentData, collectionData, deleteDoc } from '@angular/fire/firestore';
 import { UserService } from './user.service';
 import { Recipe } from '../models/recipe';
 import { User } from '../models/user';
@@ -249,5 +249,10 @@ export class RecipeService {
     const recipesRef = collection(this.firestore, 'recipes');
     const userRecipesQuery = query(recipesRef, where('userId', '==', userId));
     return collectionData(userRecipesQuery, { idField: 'id' }) as Observable<Recipe[]>;
+  }
+
+  deleteRecipe(recipeId: string): Promise<void> {
+    const recipeRef = doc(this.firestore, 'recipes', recipeId);
+    return deleteDoc(recipeRef);
   }
 }

@@ -1,54 +1,72 @@
 <div class="recipe-container" *ngIf="recipe">
-    <div class="recipe-header-grid">
-        <div class="recipe-info">
-            <h1 class="recipe-title">{{recipe.name}}</h1>
-            
-            <!-- Make author info clickable -->
-            <div class="recipe-author" (click)="navigateToAuthorProfile($event)" style="cursor: pointer;">
-                <img [src]="getAuthorProfilePicture()" 
-                     [alt]="author?.username"
-                     class="author-avatar">
-                <span class="author-name">{{author?.username}}</span>
-            </div>
-            
-            <div class="tags" *ngIf="recipe.tags && recipe.tags.length > 0">
-                <span class="tag" *ngFor="let tag of recipe.tags">{{tag}}</span>
-            </div>
+  <div class="recipe-header-grid">
+    <div class="recipe-info">
+      <h1 class="recipe-title">{{ recipe.name }}</h1>
 
-            <p class="recipe-description">{{recipe.description}}</p>
-        </div>
+      <!-- Make author info clickable -->
+      <div
+        class="recipe-author"
+        (click)="navigateToAuthorProfile($event)"
+        style="cursor: pointer"
+      >
+        <img
+          [src]="getAuthorProfilePicture()"
+          [alt]="author?.username"
+          class="author-avatar"
+        />
+        <span class="author-name">{{ author?.username }}</span>
+      </div>
 
-        <div class="recipe-image-container">
-            <img *ngIf="recipe.imageUrl" 
-                 [src]="recipe.imageUrl" 
-                 [alt]="recipe.name" 
-                 class="recipe-image">
-        </div>
+      <div class="tags" *ngIf="recipe.tags && recipe.tags.length > 0">
+        <span class="tag" *ngFor="let tag of recipe.tags">{{ tag }}</span>
+      </div>
+
+      <p class="recipe-description">{{ recipe.description }}</p>
     </div>
-    
-    <div class="recipe-content">
-        <div class="ingredients-section">
-            <h2>Ingredients</h2>
-            <ul>
-                <li *ngFor="let ingredient of recipe.ingredients">
-                    {{ingredient.quantity}} {{ingredient.unit}} {{ingredient.name}}
-                </li>
-            </ul>
-        </div>
-        
-        <div class="instructions-section">
-            <h2>Instructions</h2>
-            <ol>
-                <li *ngFor="let step of recipe.directions">{{step}}</li>
-            </ol>
-        </div>
+
+    <div class="recipe-image-container">
+      <img
+        *ngIf="recipe.imageUrl"
+        [src]="recipe.imageUrl"
+        [alt]="recipe.name"
+        class="recipe-image"
+      />
     </div>
+  </div>
+
+  <div class="recipe-content">
+    <div class="ingredients-section">
+      <h2>Ingredients</h2>
+      <ul>
+        <li *ngFor="let ingredient of recipe.ingredients">
+          {{ ingredient.quantity }} {{ ingredient.unit }} {{ ingredient.name }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="instructions-section">
+      <h2>Instructions</h2>
+      <ol>
+        <li *ngFor="let step of recipe.directions">{{ step }}</li>
+      </ol>
+    </div>
+  </div>
+<hr>
+  <!-- EDIT CURRENTLY DOESN'T WORK -->
+  @if (canEdit()) {
+    <button type="button" class="btn btn-info" (click)="editRecipe()">
+      Edit Recipe
+    </button>
+  }
+  @if (canDelete(); as allowed) {
+    <button type="button" class="btn btn-danger" (click)="deleteRecipe()">
+      Delete Recipe
+    </button>
+  }
 </div>
 
-<div class="loading" *ngIf="loading">
-    Loading recipe...
-</div>
+<div class="loading" *ngIf="loading">Loading recipe...</div>
 
 <div class="error" *ngIf="error">
-    {{error}}
+  {{ error }}
 </div>
