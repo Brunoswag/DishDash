@@ -1,21 +1,42 @@
 <div class="recipe-grid">
+  <h2>Home</h2>
   @for (recipe of recipes$ | async; track recipe.id) {
-    <div class="recipe-card" [routerLink]="['/recipe', recipe.id]" role="button">
-      <img [src]="recipe.imageUrl" [alt]="recipe.name" class="recipe-image"
-           (error)="handleImageError($event)">
+    <div
+      class="recipe-card"
+      [routerLink]="['/recipe', recipe.id]"
+      role="button"
+    >
+      <img
+        [src]="recipe.imageUrl"
+        [alt]="recipe.name"
+        class="recipe-image"
+        (error)="handleImageError($event)"
+      />
       <div class="recipe-info">
         <h3 class="recipe-title">{{ recipe.name }}</h3>
         <div class="recipe-stats">
-          <button class="stat-btn" (click)="toggleLike(recipe, $event)" 
-                  [class.active]="isLiked(recipe)">
-            <i class="bi" [class.bi-heart-fill]="isLiked(recipe)" 
-               [class.bi-heart]="!isLiked(recipe)"></i>
+          <button
+            class="stat-btn"
+            (click)="toggleLike(recipe, $event)"
+            [class.active]="isLiked(recipe)"
+          >
+            <i
+              class="bi"
+              [class.bi-heart-fill]="isLiked(recipe)"
+              [class.bi-heart]="!isLiked(recipe)"
+            ></i>
             {{ recipe.likes }}
           </button>
-          <button class="stat-btn" (click)="toggleSave(recipe, $event)"
-                  [class.active]="isSaved(recipe)">
-            <i class="bi" [class.bi-bookmark-fill]="isSaved(recipe)"
-               [class.bi-bookmark]="!isSaved(recipe)"></i>
+          <button
+            class="stat-btn"
+            (click)="toggleSave(recipe, $event)"
+            [class.active]="isSaved(recipe)"
+          >
+            <i
+              class="bi"
+              [class.bi-bookmark-fill]="isSaved(recipe)"
+              [class.bi-bookmark]="!isSaved(recipe)"
+            ></i>
             {{ recipe.saves }}
           </button>
         </div>

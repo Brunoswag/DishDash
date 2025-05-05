@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { RecipeService } from '../services/recipe.service';
@@ -15,6 +15,8 @@ import { Observable } from 'rxjs';
 export class SavedRecipeComponent implements OnInit {
   savedRecipes$: Observable<Recipe[]>;
   loading = true;
+
+  @Input() recipes: Recipe[] = [];
 
   constructor(private recipeService: RecipeService) {
     this.savedRecipes$ = this.recipeService.savedRecipes$;

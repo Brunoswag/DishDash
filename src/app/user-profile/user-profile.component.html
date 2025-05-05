@@ -1,7 +1,7 @@
 @if (loading) {
   <div class="loading">Loading profile...</div>
 } @else if (error) {
-  <div class="error">{{error}}</div>
+  <div class="error">{{ error }}</div>
 } @else if (profileUser) {
   <div class="profile-container">
     <div class="profile-header">
@@ -12,11 +12,12 @@
       />
       <div class="info-box">
         <div class="rating">
-          @for (star of [].constructor(rating); track $index) {
+          <!-- @for (star of [].constructor(rating); track $index) {
             <span>★</span>
-          }
+          } -->
           <div>
             <h2>{{ profileUser.username }}</h2>
+            <h5>Last online: {{ getLastOnlineDate() | date: "longDate" }}</h5>
             <!-- @if (isOwnProfile) {
               <span class="badge bg-primary">Your Profile</span>
             } -->
@@ -26,23 +27,32 @@
     </div>
 
     <div class="details-box">
-      <h3>Details</h3>
+      <h2>Details</h2>
       <p>
         <strong>Account creation date:</strong>
         {{ getCreatedAtDate() | date: "longDate" }}
       </p>
-      <p><strong>Number of recipes created:</strong> {{ recipesCreated }}</p>
-      <p><strong>Number of recipes saved:</strong> {{ recipesSaved }}</p>
+      <p><strong>Recipes created:</strong> {{ recipesCreated }}</p>
+      <p><strong>Recipes saved:</strong> {{ recipesSaved }}</p>
+      <p><strong>Recipes liked:</strong> {{ recipesLiked }}</p>
     </div>
 
     <div class="recipe-section">
       <div class="recipe-box">
-        <h3>Top Recipes</h3>
-        <!-- Add recipe list here -->
-      </div>
-      <div class="recipe-box">
-        <h3>Saved Recipes</h3>
-        <!-- Add saved recipes list here -->
+        <h2>Created Recipes</h2>
+        @if (createdRecipes!.length > 0) {
+          <ul>
+            @for (recipe of createdRecipes; track recipe.id) {
+              <li>
+                <a [routerLink]="['/recipe', recipe.id]">
+                  <p>{{ recipe.name }}</p>
+                </a>
+              </li>
+            }
+          </ul>
+        } @else {
+          <p>No recipes created yet.</p>
+        }
       </div>
     </div>
   </div>

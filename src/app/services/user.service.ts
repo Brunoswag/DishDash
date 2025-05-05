@@ -15,7 +15,7 @@ import {
   Timestamp
 } from '@angular/fire/firestore';
 import { User } from '../models/user'
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, from, map, Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -99,24 +99,46 @@ export class UserService {
     return 'assets/default-avatar.png';
   }
 
-  async getUserByUsername(username: string): Promise<User | null> {
-    try {
-      const usersRef = collection(this.firestore, 'users');
-      const q = query(usersRef, where('username', '==', username));
-      const querySnapshot = await getDocs(q);
+  // async getUserByUsername(username: string): Promise<User | null> {
+  //   try {
+  //     const usersRef = collection(this.firestore, 'users');
+  //     const q = query(usersRef, where('username', '==', username));
+  //     const querySnapshot = await getDocs(q);
       
-      if (querySnapshot.empty) {
-        return null;
-      }
+  //     if (querySnapshot.empty) {
+  //       return null;
+  //     }
 
-      const userDoc = querySnapshot.docs[0];
-      return {
-        ...userDoc.data(),
-        uid: userDoc.id
-      } as User;
-    } catch (error) {
-      console.error('Error fetching user by username:', error);
-      return null;
-    }
+  //     const userDoc = querySnapshot.docs[0];
+  //     return {
+  //       ...userDoc.data(),
+  //       uid: userDoc.id
+  //     } as User;
+  //   } catch (error) {
+  //     console.error('Error fetching user by username:', error);
+  //     return null;
+  //   }
+  // }
+
+  getUserByUsername(username: string): Observable<User | null> {
+    const usersRef = collection(this.firestore, 'users');
+    const q = query(usersRef, where('username', '==', username));
+  
+    return from(getDocs(q)).pipe(
+      map(querySnapshot => {
+        if (querySnapshot.empty) {
+          return null;
+        }
+        const userDoc = querySnapshot.docs[0];
+        return {
+          ...userDoc.data(),
+          uid: userDoc.id
+        } as User;
+      }),
+      catchError(error => {
+        console.error('Error fetching user by username:', error);
+        return of(null);
+      })
+    );
   }
 }

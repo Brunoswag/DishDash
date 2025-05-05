@@ -97,7 +97,7 @@ button.stat-btn:has(.bi-bookmark-fill).active {
 }
 
 .no-recipes {
-  text-align: center;
+  text-align:center;
   padding: 3rem;
   color: #666;
   font-size: 1.1rem;

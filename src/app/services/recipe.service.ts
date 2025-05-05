@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, doc, updateDoc, arrayUnion, arrayRemove, increment, collection, query, where, getDocs, getDoc, DocumentData } from '@angular/fire/firestore';
+import { Firestore, doc, updateDoc, arrayUnion, arrayRemove, increment, collection, query, where, getDocs, getDoc, DocumentData, collectionData } from '@angular/fire/firestore';
 import { UserService } from './user.service';
 import { Recipe } from '../models/recipe';
 import { User } from '../models/user';
@@ -192,6 +192,32 @@ export class RecipeService {
     return from(this.getSavedRecipes());
   }
 
+  async getLikedRecipes(): Promise<Recipe[]> {
+    const currentUser = this.userService.getCurrentUser();
+    if (!currentUser?.savedRecipes) return [];
+
+    try {
+      const recipesCollection = collection(this.firestore, 'recipes');
+      const likedRecipesQuery = query(
+        recipesCollection, 
+        where('__name__', 'in', currentUser.likedRecipes)
+      );
+
+      const querySnapshot = await getDocs(likedRecipesQuery);
+      return querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      } as Recipe));
+    } catch (error) {
+      console.error('Error fetching liked recipes:', error);
+      return [];
+    }
+  }
+
+  getLikedRecipes$(): Observable<Recipe[]> {
+    return from(this.getLikedRecipes());
+  }
+
   async getRecipeAuthor(userId: string): Promise<User | null> {
     try {
       const userDoc = await getDoc(doc(this.firestore, 'users', userId));
@@ -217,5 +243,11 @@ export class RecipeService {
       console.error('Error getting recipe count:', error);
       return 0;
     }
+  }
+
+  getCreatedRecipesByUserId(userId: string): Observable<Recipe[]> {
+    const recipesRef = collection(this.firestore, 'recipes');
+    const userRecipesQuery = query(recipesRef, where('userId', '==', userId));
+    return collectionData(userRecipesQuery, { idField: 'id' }) as Observable<Recipe[]>;
   }
 }

@@ -1,16 +1,18 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { User } from '../models/user';
 import { UserService } from '../services/user.service';
 import { RecipeService } from '../services/recipe.service';
 import { Subscription } from 'rxjs';
 import { Timestamp } from '@angular/fire/firestore';
+import { Recipe } from '../models/recipe';
+import { SavedRecipeComponent } from '../saved-recipe/saved-recipe.component';
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css'
 })
@@ -21,8 +23,13 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   error: string | null = null;
   recipesCreated = 0;
   recipesSaved = 0;
+  recipesLiked = 0;
   rating = 5;
   private routeSubscription?: Subscription;
+
+  createdRecipes: Recipe[] = [];
+
+  
 
   constructor(
     private route: ActivatedRoute,
@@ -31,47 +38,107 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     private recipeService: RecipeService
   ) {}
 
-  async ngOnInit() {
+  // ngOnInit() {
+  //   // Subscribe to route parameter changes
+  //   this.routeSubscription = this.route.paramMap.subscribe(async params => {
+  //     try {
+  //       this.loading = true;
+  //       const username = params.get('username');
+        
+  //       if (!username) {
+  //         throw new Error('No username provided');
+  //       }
+
+  //       const profileUser = await this.userService.getUserByUsername(username);
+        
+  //       if (!profileUser) {
+  //         throw new Error('User not found');
+  //       }
+
+  //       this.profileUser = profileUser;
+        
+  //       // Check if this is the current user's profile
+  //       const currentUser = this.userService.getCurrentUser();
+  //       this.isOwnProfile = currentUser?.uid === profileUser.uid;
+
+  //       // Load user's stats
+  //       await this.loadUserStats();
+  //     } catch (error) {
+  //       console.error('Error loading profile:', error);
+  //       this.error = 'Profile not found';
+  //       this.router.navigate(['/home']);
+  //     } finally {
+  //       this.loading = false;
+  //     }
+
+  //     });
+  // }
+
+  ngOnInit() {
     // Subscribe to route parameter changes
-    this.routeSubscription = this.route.paramMap.subscribe(async params => {
-      try {
-        this.loading = true;
-        const username = params.get('username');
-        
-        if (!username) {
-          throw new Error('No username provided');
-        }
-
-        const profileUser = await this.userService.getUserByUsername(username);
-        
-        if (!profileUser) {
-          throw new Error('User not found');
-        }
-
-        this.profileUser = profileUser;
-        
-        // Check if this is the current user's profile
-        const currentUser = this.userService.getCurrentUser();
-        this.isOwnProfile = currentUser?.uid === profileUser.uid;
-
-        // Load user's stats
-        await this.loadUserStats();
-      } catch (error) {
-        console.error('Error loading profile:', error);
-        this.error = 'Profile not found';
+    this.routeSubscription = this.route.paramMap.subscribe(params => {
+      const username = params.get('username');
+  
+      if (!username) {
+        this.error = 'No username provided';
+        console.error('Error loading profile: No username provided');
         this.router.navigate(['/home']);
-      } finally {
-        this.loading = false;
+        return;
       }
+  
+      this.loading = true;
+  
+      this.userService.getUserByUsername(username).subscribe({
+        next: (profileUser) => {
+          if (!profileUser) {
+            this.error = 'User not found';
+            console.error('Error loading profile: User not found');
+            this.router.navigate(['/home']);
+            return;
+          }
+  
+          this.profileUser = profileUser;
+  
+          // Check if this is the current user's profile
+          const currentUser = this.userService.getCurrentUser();
+          this.isOwnProfile = currentUser?.uid === profileUser.uid;
+  
+          // Load user's details and created recipes
+          this.loadUserStats();
+          this.loadUserRecipes(profileUser.uid);
+        },
+        error: (err) => {
+          console.error('Error loading profile:', err);
+          this.error = 'Error loading profile';
+          this.router.navigate(['/home']);
+        },
+        complete: () => {
+          this.loading = false;
+        },
+      });
     });
+  }
+  
+  loadUserRecipes(userId: string) {
+    // Load created recipes
+    this.recipeService.getCreatedRecipesByUserId(userId).subscribe({
+      
+      next: (recipes) => {
+        this.createdRecipes = recipes;
+      },
+      error: (err) => {
+        console.error('Error loading created recipes:', err);
+      },
+  });
   }
 
   private async loadUserStats() {
     if (!this.profileUser) return;
 
-    // You'll need to implement these methods in your RecipeService
     this.recipesCreated = await this.recipeService.getRecipeCountByUser(this.profileUser.uid);
     this.recipesSaved = this.profileUser.savedRecipes?.length || 0;
+    this.recipesLiked = this.profileUser.likedRecipes?.length || 0;
+
   }
 
   getProfilePicture(): string {
@@ -81,6 +148,13 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   getCreatedAtDate(): Date | null {
     if (this.profileUser?.createdAt instanceof Timestamp) {
       return this.profileUser.createdAt.toDate();
+    }
+    return null;
+  }
+
+  getLastOnlineDate(): Date | null {
+    if (this.profileUser?.lastLogin instanceof Timestamp) {
+      return this.profileUser.lastLogin.toDate();
     }
     return null;
   }
