@@ -46,6 +46,7 @@
                 <input
                   class="form-check-input"
                   type="checkbox"
+                  (change)="onFilterDate($event)"
                   value=""
                   id="filter1"
                 />
@@ -59,6 +60,7 @@
                 <input
                   class="form-check-input"
                   type="checkbox"
+                  (change)="onFilterCategory($event)"
                   value=""
                   id="filter2"
                 />
@@ -103,8 +105,10 @@
           </div>
         </li>
         <li>
-          <a class="dropdown-item d-flex align-items-center gap-2"
-             (click)="navigateToProfile()">
+          <a
+            class="dropdown-item d-flex align-items-center gap-2"
+            (click)="navigateToProfile()"
+          >
             <i class="bi bi-person"></i>
             My Profile
           </a>
