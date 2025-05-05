@@ -73,7 +73,7 @@ export class HomeComponent implements OnInit {
 
     const recipesCollection = collection(this.firestore, 'recipes');
 
-    let q: Query<DocumentData> = query(recipesCollection, orderBy('name'));
+    let q: Query<DocumentData> = query(recipesCollection);
 
     if (filter === 'date') {
       console.log('Applying date filter');
@@ -84,7 +84,12 @@ export class HomeComponent implements OnInit {
     }
 
     if (searchText) {
-      q = query(q, startAt(searchText), endAt(searchText + '\uf8ff'));
+      q = query(
+        q,
+        orderBy('name'),
+        startAt(searchText),
+        endAt(searchText + '\uf8ff'),
+      );
     }
 
     this.recipes$ = collectionData(q, { idField: 'id' }).pipe(
