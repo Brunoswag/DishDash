@@ -81,16 +81,25 @@ export class HomeComponent implements OnInit {
     } else if (filter === 'category') {
       console.log('Applying category filter');
       q = query(q, orderBy('tags', 'desc'));
-    }
-
-    if (searchText) {
+    } else {
+      // Default behavior: no filter selected, order by name
+      console.log('Applying default filter: order by name');
       q = query(
         q,
-        orderBy('name'),
+        orderBy('name'), // Order by name first when no filters are applied
         startAt(searchText),
         endAt(searchText + '\uf8ff'),
       );
     }
+
+    // if (searchText) {
+    //   q = query(
+    //     q,
+    //     orderBy('name'),
+    //     startAt(searchText),
+    //     endAt(searchText + '\uf8ff'),
+    //   );
+    // }
 
     this.recipes$ = collectionData(q, { idField: 'id' }).pipe(
       map(
