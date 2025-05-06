@@ -106,8 +106,10 @@ export class HomeComponent implements OnInit {
         (recipes) =>
           recipes.map((recipe) => ({
             ...recipe,
-            likes: 10,
-            saves: 20,
+            likes: recipe['likes'] || 0,
+            saves: recipe['saves'] || 0,
+            likedBy: recipe['likedBy'] || [],
+            savedBy: recipe['savedBy'] || [],
             imageUrl:
               recipe['imageUrl'] ||
               'https://placehold.co/600x400/png?text=Recipe',
