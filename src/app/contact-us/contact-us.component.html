@@ -1,1 +1,21 @@
-<p>contact-us works!</p>
+<div class="container py-5">
+  <h2>Contact DishDash (Us!)</h2>
+  <p>Need help? Submit feedback or report a bug below.</p>
+
+  <form>
+    <div class="mb-3">
+      <label for="subject" class="form-label">Subject</label>
+      <input id="subject" class="form-control" placeholder="Short summary..." />
+    </div>
+    <div class="mb-3">
+      <label for="message" class="form-label">Message</label>
+      <textarea
+        id="message"
+        rows="5"
+        class="form-control"
+        placeholder="Describe your issue or suggestion..."
+      ></textarea>
+    </div>
+    <button class="btn btn-primary" type="submit" (click)="submit()">Submit</button>
+  </form>
+</div>

@@ -8,4 +8,7 @@ import { Component } from '@angular/core';
 })
 export class ContactUsComponent {
 
+  submit(){
+    //need to implement to firebase
+  }
 }

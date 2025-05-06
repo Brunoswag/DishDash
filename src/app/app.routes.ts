@@ -10,6 +10,8 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { RecipeFormComponent } from './recipe-form/recipe-form.component';
 import { SavedRecipeComponent } from './saved-recipe/saved-recipe.component'; 
 import { LikedRecipeComponent } from './liked/liked.component';
+import { SettingsComponent } from './settings/settings.component';
+import { ContactUsComponent } from './contact-us/contact-us.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -19,6 +21,8 @@ export const routes: Routes = [
   { path: 'saved', component: SavedRecipeComponent },
   { path: 'liked', component: LikedRecipeComponent },
   { path: 'user-profile', component: UserProfileComponent },
+  { path: 'settings', component: SettingsComponent },
+  { path: 'contact-us', component: ContactUsComponent },
   { 
     path: 'profile/:username', 
     component: UserProfileComponent 
