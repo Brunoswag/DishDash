@@ -8,6 +8,8 @@
       <li class="nav-item mb-3">
         <a
           [routerLink]="item.route"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
           class="nav-link d-flex align-items-center gap-3 text-dark"
         >
           <i [class]="item.icon"></i>
@@ -21,9 +23,11 @@
   <div class="profile">
     @if (user) {
       <div>
-        <a (click)="navigateToProfile()" 
-           class="nav-link d-flex align-items-center gap-3 text-dark"
-           style="cursor: pointer;">
+        <a
+          (click)="navigateToProfile()"
+          class="nav-link d-flex align-items-center gap-3 text-dark"
+          style="cursor: pointer"
+        >
           <img
             [src]="getProfilePicture()"
             [alt]="user.username + '\'s profile picture'"

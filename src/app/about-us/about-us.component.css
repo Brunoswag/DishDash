@@ -1,0 +1,27 @@
+.about-container {
+  max-width: 800px;
+  margin: auto;
+  background-color: #fff5f8; /* soft pink background */
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.about-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.about-container h1 {
+  font-size: 2.5rem;
+  color: #333; /* Bootstrap pink */
+  margin-bottom: 1rem;
+}
+
+.about-container p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #333;
+}

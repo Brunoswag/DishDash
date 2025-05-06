@@ -8,10 +8,11 @@ import { authGuard } from './auth.guard';
 import { SearchComponent } from './search/search.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { RecipeFormComponent } from './recipe-form/recipe-form.component';
-import { SavedRecipeComponent } from './saved-recipe/saved-recipe.component'; 
+import { SavedRecipeComponent } from './saved-recipe/saved-recipe.component';
 import { LikedRecipeComponent } from './liked/liked.component';
 import { SettingsComponent } from './settings/settings.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
+import { AboutUsComponent } from './about-us/about-us.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -23,15 +24,16 @@ export const routes: Routes = [
   { path: 'user-profile', component: UserProfileComponent },
   { path: 'settings', component: SettingsComponent },
   { path: 'contact-us', component: ContactUsComponent },
-  { 
-    path: 'profile/:username', 
-    component: UserProfileComponent 
+  { path: 'about-us', component: AboutUsComponent },
+  {
+    path: 'profile/:username',
+    component: UserProfileComponent,
   },
   { path: 'new-recipe', component: RecipeFormComponent },
-  { 
-    path: 'recipe/:id', 
+  {
+    path: 'recipe/:id',
     component: RecipeComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
   },
-  { path: '**', redirectTo: 'home' }
+  { path: '**', redirectTo: 'home' },
 ];
