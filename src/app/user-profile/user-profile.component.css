@@ -200,7 +200,7 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 1rem;
-    background-color: #007bff;
+    background-color: lightpink;
     color: white;
     border-radius: 4px;
     cursor: pointer;
@@ -209,9 +209,17 @@
   }
 
   .upload-btn:hover {
-    background-color: #0056b3;
+    filter: brightness(0.9);
   }
 
   .upload-btn i {
     font-size: 1.1rem;
+  }
+
+  .btn-primary {
+    background-color: lightpink;
+    border-color: lightpink;
+    border-radius: 10px;
+    padding: 10px;
+    font-weight: 500;
   }

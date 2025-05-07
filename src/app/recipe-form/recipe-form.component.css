@@ -16,3 +16,26 @@
 textarea {
   resize: vertical;
 }
+
+.btn-outline-primary {
+  background-color: white;
+  border-radius: 10px;
+  padding: 10px;
+  font-weight: 500;
+
+  /* these two do not use regular color for visability reasons */
+  border-color: palevioletred;
+  color: palevioletred;
+}
+
+.btn-primary {
+  background-color: lightpink;
+  border-color: lightpink;
+  border-radius: 10px;
+  padding: 10px;
+  font-weight: 500;
+}
+.btn:hover {
+  filter: brightness(0.9);
+  border-color: gray;
+}
