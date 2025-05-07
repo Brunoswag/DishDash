@@ -1,36 +1,42 @@
 /* Spencer Lommel 4/25/25 */
 
 .card {
-    border: none;
-    border-radius: 10px;
-  }
-  
-  .card-header {
-    border-radius: 10px 10px 0 0;
-  }
-  
-  .btn-primary {
-    background-color: #0d6efd;
-    border-color: #0d6efd;
-    padding: 10px;
-    font-weight: 500;
-  }
-  
-  .btn-primary:hover {
-    background-color: #0b5ed7;
-    border-color: #0a58ca;
-  }
-  
-  .form-control:focus {
-    border-color: #86b7fe;
-    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-  }
-  
-  a {
-    color: #0d6efd;
-    text-decoration: none;
-  }
-  
-  a:hover {
-    text-decoration: underline;
-  }
+  border: none;
+  border-radius: 10px;
+}
+
+.card-header {
+  background-color: lightpink;
+  color: white;
+  border-radius: 10px 10px 0 0;
+}
+.card-header.bg-primary {
+  background-color: lightpink !important;
+}
+
+.btn-primary {
+  background-color: lightpink;
+  border-color: lightpink;
+  border-radius: 10px;
+  padding: 10px;
+  font-weight: 500;
+}
+
+.btn-primary:hover {
+  filter: brightness(0.9);
+  border-color: gray;
+}
+
+.form-control:focus {
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+a {
+  color: lightpink;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
