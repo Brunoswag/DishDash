@@ -1,9 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { RecipeService } from '../services/recipe.service';
 import { Recipe } from '../models/recipe';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-saved-recipe',
@@ -12,20 +13,40 @@ import { Observable } from 'rxjs';
   templateUrl: './saved-recipe.component.html',
   styleUrls: ['./saved-recipe.component.css']
 })
-export class SavedRecipeComponent implements OnInit {
+export class SavedRecipeComponent implements OnInit, OnDestroy {
   savedRecipes$: Observable<Recipe[]>;
   loading = true;
+  error: string | null = null;
+  private userSubscription?: Subscription;
 
   @Input() recipes: Recipe[] = [];
 
-  constructor(private recipeService: RecipeService) {
+  constructor(
+    private recipeService: RecipeService,
+    private userService: UserService
+  ) {
     this.savedRecipes$ = this.recipeService.savedRecipes$;
   }
 
   async ngOnInit(): Promise<void> {
+    // Subscribe to user changes to reload data when user state changes
+    this.userSubscription = this.userService.currentUser$.subscribe(async (user) => {
+      if (user) {
+        await this.loadData();
+      } else {
+        this.loading = false;
+      }
+    });
+  }
+
+  private async loadData(): Promise<void> {
     try {
       this.loading = true;
+      this.error = null;
       await this.recipeService.loadSavedRecipes();
+    } catch (err) {
+      console.error('Error loading saved recipes:', err);
+      this.error = 'Failed to load saved recipes';
     } finally {
       this.loading = false;
     }
@@ -49,7 +70,7 @@ export class SavedRecipeComponent implements OnInit {
     event.stopPropagation();
     await this.recipeService.toggleSave(recipe);
     // Refresh the saved recipes list
-    this.savedRecipes$ = this.recipeService.savedRecipes$;
+    await this.loadData();
   }
 
   isLiked(recipe: Recipe): boolean {
@@ -58,5 +79,9 @@ export class SavedRecipeComponent implements OnInit {
 
   isSaved(recipe: Recipe): boolean {
     return this.recipeService.isSavedByUser(recipe);
+  }
+
+  ngOnDestroy() {
+    this.userSubscription?.unsubscribe();
   }
 }

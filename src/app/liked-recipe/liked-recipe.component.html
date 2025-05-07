@@ -1,0 +1,35 @@
+@if (loading) {
+  <div class="loading">Loading liked recipes...</div>
+} @else if (error) {
+  <div class="error">{{ error }}</div>
+} @else {
+  <div class="recipe-grid">
+    @for (recipe of likedRecipes$ | async; track recipe.id) {
+      <div class="recipe-card" [routerLink]="['/recipe', recipe.id]" role="button">
+        <img
+          [src]="recipe.imageUrl || 'https://placehold.co/600x400/png?text=Recipe'"
+          [alt]="recipe.name"
+          class="recipe-image"
+          (error)="handleImageError($event)"
+        />
+        <div class="recipe-info">
+          <h3 class="recipe-title">{{ recipe.name }}</h3>
+          <div class="recipe-stats">
+            <button class="stat-btn" (click)="toggleLike(recipe, $event)" [class.active]="isLiked(recipe)">
+              <i class="bi" [class.bi-heart-fill]="isLiked(recipe)" [class.bi-heart]="!isLiked(recipe)"></i>
+              {{ recipe.likes }}
+            </button>
+            <button class="stat-btn" (click)="toggleSave(recipe, $event)" [class.active]="isSaved(recipe)">
+              <i class="bi" [class.bi-bookmark-fill]="isSaved(recipe)" [class.bi-bookmark]="!isSaved(recipe)"></i>
+              {{ recipe.saves }}
+            </button>
+          </div>
+        </div>
+      </div>
+    } @empty {
+      <div class="no-recipes">
+        <p>No liked recipes yet.</p>
+      </div>
+    }
+  </div>
+} 

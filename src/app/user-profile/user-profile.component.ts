@@ -26,10 +26,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   recipesLiked = 0;
   rating = 5;
   private routeSubscription?: Subscription;
+  private userSubscription?: Subscription;
 
   createdRecipes: Recipe[] = [];
-
-  
 
   constructor(
     private route: ActivatedRoute,
@@ -39,6 +38,13 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    // Subscribe to user changes
+    this.userSubscription = this.userService.currentUser$.subscribe(currentUser => {
+      if (this.profileUser) {
+        this.isOwnProfile = currentUser?.uid === this.profileUser.uid;
+      }
+    });
+
     // Subscribe to route parameter changes
     this.routeSubscription = this.route.paramMap.subscribe(params => {
       const username = params.get('username');
@@ -105,24 +111,26 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   }
 
-  onProfilePictureSelected(event: Event) {
+  async onProfilePictureSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (!input.files || input.files.length === 0) return;
   
     const file = input.files[0];
+    this.loading = true;
   
-    // Upload the file to Firebase Storage
-    this.userService.uploadProfilePicture(file).then(downloadURL => {
+    try {
+      // Upload the file to Firebase Storage
+      const downloadURL = await this.userService.uploadProfilePicture(file);
       if (this.profileUser) {
-        this.userService.updateProfilePicture(this.profileUser.uid, downloadURL).then(() => {
-          this.profileUser!.profilePicture = downloadURL;
-        }).catch(err => {
-          console.error('Error updating profile picture:', err);
-        });
+        await this.userService.updateProfilePicture(this.profileUser.uid, downloadURL);
+        this.profileUser.profilePicture = downloadURL;
       }
-    }).catch(err => {
-      console.error('Error uploading profile picture:', err);
-    });
+    } catch (err) {
+      console.error('Error updating profile picture:', err);
+      this.error = 'Failed to update profile picture';
+    } finally {
+      this.loading = false;
+    }
   }
 
   getProfilePicture(): string {
@@ -178,5 +186,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.routeSubscription?.unsubscribe();
+    this.userSubscription?.unsubscribe();
   }
 }

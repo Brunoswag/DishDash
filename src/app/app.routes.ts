@@ -9,7 +9,7 @@ import { SearchComponent } from './search/search.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { RecipeFormComponent } from './recipe-form/recipe-form.component';
 import { SavedRecipeComponent } from './saved-recipe/saved-recipe.component';
-import { LikedRecipeComponent } from './liked/liked.component';
+import { LikedRecipeComponent } from './liked-recipe/liked-recipe.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 

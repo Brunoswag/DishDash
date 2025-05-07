@@ -27,3 +27,44 @@
   padding: 1rem;
   overflow-y: auto;
 }
+
+.nav-link {
+  color: #666;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.nav-link.active {
+  background-color: lightpink;
+  color: white;
+}
+
+.nav-link.active:hover {
+  background-color: #ffb6c1;
+  color: white;
+}
+
+/* Update the profile picture upload button to match */
+.upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: lightpink;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.upload-btn:hover {
+  background-color: #ffb6c1;
+}

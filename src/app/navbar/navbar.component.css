@@ -56,23 +56,30 @@
     }
   }
 
-  .nav-link.active {
-    background-color: lightpink;
-    color: black;
-  }
-
   .nav-link {
     font-size: 1rem;
     padding: 0.75rem 1rem;
-    transition: background 0.2s;
+    transition: all 0.2s ease;
     border-radius: 8px;
     white-space: nowrap;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    color: #666;
 
     &:hover {
       background-color: #f2f2f2;
+      color: #333;
+    }
+
+    &.active {
+      background-color: lightpink;
+      color: white;
+
+      &:hover {
+        background-color: #ffb6c1;
+        color: white;
+      }
     }
 
     i {
