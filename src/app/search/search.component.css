@@ -69,3 +69,26 @@
 .dropdown-item .bi-chevron-right {
   font-size: 0.8rem;
 }
+
+.sign-in-btn {
+  border: 1.5px solid lightpink;
+  color: white;
+  background: lightpink;
+  border-radius: 2rem;
+  padding: 0.4rem 1.2rem;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.sign-in-btn:hover {
+  background: #ffb6c1;
+  color: white;
+  border-color: #ffb6c1;
+  text-decoration: none;
+}
+.sign-in-btn i {
+  font-size: 1.2rem;
+}

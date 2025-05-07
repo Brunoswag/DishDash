@@ -197,13 +197,9 @@
     </div>
 
     <div *ngIf="!user">
-      <a routerLink="/login" class="nav-link d-flex align-items-center gap-2">
-        <img
-          src="../../assets/user_profile_picture.jpeg"
-          alt="Default profile picture"
-          class="profile-img"
-        />
-        <span>Login</span>
+      <a routerLink="/login" class="sign-in-btn d-flex align-items-center gap-2">
+        <i class="bi bi-person" style="font-size: 1.2rem;"></i>
+        <span>Sign in</span>
       </a>
     </div>
   </div>

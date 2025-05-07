@@ -85,9 +85,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     return this.userService.getProfilePicture(this.user);
   }
 
-  signOut() {
-    this.userService.signOut();
-    this.router.navigate(['/login']);
+  async signOut() {
+    await this.userService.signOut();
   }
 
   navigateToProfile(): void {

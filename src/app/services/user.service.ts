@@ -82,15 +82,23 @@ export class UserService {
     return this.currentUserSubject.value;
   }
 
-  signOut(): void {
+  async signOut(): Promise<void> {
+    // Sign out from Firebase Auth
+    await this.auth.signOut();
     // Clear the current user
     this.currentUserSubject.next(null);
-    
     // Clear any stored authentication tokens
     localStorage.removeItem('auth_token');
-    
     // You might want to clear other user-related data from localStorage
     localStorage.removeItem('user_data');
+    // Clear cookies
+    document.cookie.split(';').forEach(c => {
+      document.cookie = c
+        .replace(/^ +/, '')
+        .replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/');
+    });
+    // Reload the page to ensure full logout
+    window.location.reload();
   }
 
   getProfilePicture(user: User | null): string {

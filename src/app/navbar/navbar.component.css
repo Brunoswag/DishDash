@@ -81,14 +81,6 @@
         color: white;
       }
     }
-
-    i {
-      font-size: 1.25rem;
-    }
-
-    span {
-      transition: opacity 0.3s ease;
-    }
   }
 }
 
