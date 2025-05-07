@@ -4,8 +4,11 @@ DishDash is a social media platform for food enthusiasts to create, share, like,
 
 Features
 *Create Recipes – Share your culinary creations with the community.
+
 *Like & Save Recipes – Show appreciation for others' recipes or bookmark them for later.
+
 *Browse Recipes – Explore new dishes from cooks all over the world.
+
 *Profile Page – View your username, cooking stats, and all your created recipes.
 
 Technologies Used
