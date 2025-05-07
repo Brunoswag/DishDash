@@ -13,11 +13,17 @@ Features
 
 Technologies Used
 *Angular 19
+
 *Angular Router
+
 *Reactive Forms
+
 *RxJS
+
 *Bootstrap / Angular Material
+
 *TypeScript
+
 
 
 
