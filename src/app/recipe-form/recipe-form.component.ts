@@ -3,13 +3,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
-import { Firestore, collection, addDoc } from '@angular/fire/firestore';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
+import { Firestore, collection, addDoc, doc, updateDoc } from '@angular/fire/firestore';
 import { Storage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
 import { UserService } from '../services/user.service';
 import { Recipe } from '../models/recipe';
 import { Ingredient } from '../models/ingredient';
 import { RecipeService } from '../services/recipe.service';
+import { FirebaseService } from '../firebase.service';
 
 @Component({
   selector: 'app-recipe-form',
@@ -18,12 +19,15 @@ import { RecipeService } from '../services/recipe.service';
   templateUrl: './recipe-form.component.html',
   styleUrl: './recipe-form.component.css'
 })
-export class RecipeFormComponent {
+export class RecipeFormComponent implements OnInit {
   recipeForm: FormGroup;
   tags: string[] = [];
   tagInput: string = '';
   imageFile: File | null = null;
   loading = false;
+  editMode = false;
+  recipeId: string | null = null;
+  originalImageUrl: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -31,7 +35,9 @@ export class RecipeFormComponent {
     private storage: Storage,
     private userService: UserService,
     private recipeService: RecipeService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
+    private firebaseService: FirebaseService
   ) {
     this.recipeForm = this.fb.group({
       name: ['', Validators.required],
@@ -42,6 +48,61 @@ export class RecipeFormComponent {
     });
   }
   
+  ngOnInit(): void {
+    this.route.params.subscribe(async params => {
+      const id = params['id'];
+      if (id) {
+        this.editMode = true;
+        this.recipeId = id;
+        await this.loadRecipeForEdit(id);
+      }
+    });
+  }
+
+  async loadRecipeForEdit(id: string) {
+    this.loading = true;
+    try {
+      const recipe = await this.firebaseService.getRecipeById(id) as Recipe;
+      if (!recipe) {
+        alert('Recipe not found');
+        this.router.navigate(['/home']);
+        return;
+      }
+      const currentUser = this.userService.getCurrentUser();
+      if (!currentUser || recipe.userId !== currentUser.uid) {
+        alert('You are not authorized to edit this recipe.');
+        this.router.navigate(['/home']);
+        return;
+      }
+      this.recipeForm.patchValue({
+        name: recipe.name,
+        description: recipe.description,
+        image: recipe.imageUrl || ''
+      });
+      this.tags = recipe.tags || [];
+      this.originalImageUrl = recipe.imageUrl || '';
+      // Populate ingredients
+      this.ingredients.clear();
+      (recipe.ingredients || []).forEach((ing: any) => {
+        this.ingredients.push(this.fb.group({
+          name: [ing.name, Validators.required],
+          quantity: [ing.quantity, [Validators.required, Validators.min(0)]],
+          unit: [ing.unit, Validators.required]
+        }));
+      });
+      // Populate directions
+      this.directions.clear();
+      (recipe.directions || []).forEach((dir: string) => {
+        this.directions.push(this.fb.control(dir, Validators.required));
+      });
+    } catch (error) {
+      alert('Failed to load recipe for editing.');
+      this.router.navigate(['/home']);
+    } finally {
+      this.loading = false;
+    }
+  }
+
   // Getters for form arrays
   get ingredients() {
     return this.recipeForm.get('ingredients') as FormArray;
@@ -114,34 +175,48 @@ export class RecipeFormComponent {
     }
 
     try {
-      let imageUrl = '';
+      let imageUrl = this.originalImageUrl;
       if (this.imageFile) {
         imageUrl = await this.uploadImage(this.imageFile);
       }
 
-      const recipe: Recipe = {
-        userId: currentUser.uid,
-        name: this.recipeForm.value.name,
-        description: this.recipeForm.value.description,
-        imageUrl: imageUrl,
-        tags: this.tags,
-        ingredients: this.recipeForm.value.ingredients,
-        directions: this.recipeForm.value.directions,
-        createdAt: new Date(),
-        likes: 0, // Add initial values for required fields
-        saves: 0,
-        likedBy: [], // Initialize empty arrays
-        savedBy: []
-      };
-
-      const recipesRef = collection(this.firestore, 'recipes');
-      await addDoc(recipesRef, recipe);
-
-      alert('Recipe created successfully!');
-      this.router.navigate(['/home']);
+      if (this.editMode && this.recipeId) {
+        // Update existing recipe
+        const recipeRef = doc(this.firestore, 'recipes', this.recipeId);
+        await updateDoc(recipeRef, {
+          name: this.recipeForm.value.name,
+          description: this.recipeForm.value.description,
+          imageUrl: imageUrl,
+          tags: this.tags,
+          ingredients: this.recipeForm.value.ingredients,
+          directions: this.recipeForm.value.directions
+        });
+        alert('Recipe updated successfully!');
+        this.router.navigate(['/recipe', this.recipeId]);
+      } else {
+        // Create new recipe
+        const recipe: Recipe = {
+          userId: currentUser.uid,
+          name: this.recipeForm.value.name,
+          description: this.recipeForm.value.description,
+          imageUrl: imageUrl,
+          tags: this.tags,
+          ingredients: this.recipeForm.value.ingredients,
+          directions: this.recipeForm.value.directions,
+          createdAt: new Date(),
+          likes: 0,
+          saves: 0,
+          likedBy: [],
+          savedBy: []
+        };
+        const recipesRef = collection(this.firestore, 'recipes');
+        await addDoc(recipesRef, recipe);
+        alert('Recipe created successfully!');
+        this.router.navigate(['/home']);
+      }
     } catch (error) {
-      console.error('Error creating recipe:', error);
-      alert('Failed to create recipe. Please try again.');
+      console.error('Error saving recipe:', error);
+      alert('Failed to save recipe. Please try again.');
     } finally {
       this.loading = false;
     }

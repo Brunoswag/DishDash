@@ -110,7 +110,7 @@ export class RecipeComponent implements OnInit {
   
   editRecipe(): void {
     if (this.recipe?.id) {
-      this.router.navigate(['/new-recipe', this.recipe.id]);
+      this.router.navigate(['/edit-recipe', this.recipe.id]);
     }
   }
 }

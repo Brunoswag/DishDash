@@ -33,5 +33,6 @@ export const routes: Routes = [
     component: RecipeComponent,
     canActivate: [authGuard],
   },
+  { path: 'edit-recipe/:id', component: RecipeFormComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: 'home' },
 ];

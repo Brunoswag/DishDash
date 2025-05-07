@@ -1,5 +1,9 @@
-<div class="recipe-grid">
+<div class="home-recipes-container">
   <h2>Home</h2>
+
+<div class="recipe-grid">
+
+  
   @for (recipe of recipes$ | async; track recipe.id) {
     <div
       class="recipe-card"
@@ -47,4 +51,5 @@
       <p>No recipes found. Be the first to add one!</p>
     </div>
   }
+</div>
 </div>

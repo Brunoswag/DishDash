@@ -1,5 +1,6 @@
 <div class="container mt-4">
-  <h2>Create New Recipe</h2>
+  <h2 *ngIf="!editMode">Create New Recipe</h2>
+  <h2 *ngIf="editMode">Edit Recipe</h2>
   
   <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()" class="mt-4">
     <!-- Basic Information -->
@@ -86,7 +87,7 @@
     <div class="mb-3">
       <button type="submit" class="btn btn-primary" [disabled]="!recipeForm.valid || loading">
         <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
-        {{ loading ? 'Creating Recipe...' : 'Create Recipe' }}
+        {{ loading ? (editMode ? 'Updating Recipe...' : 'Creating Recipe...') : (editMode ? 'Update Recipe' : 'Create Recipe') }}
       </button>
     </div>
   </form>
