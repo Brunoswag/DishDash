@@ -143,6 +143,39 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     return null;
   }
 
+  handleImageError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    if (img) {
+      img.src = 'https://placehold.co/600x400/png?text=Recipe';
+    }
+  }
+
+  async toggleLike(recipe: Recipe, event: Event): Promise<void> {
+    event.preventDefault();
+    event.stopPropagation();
+    if (!this.userService.getCurrentUser()) {
+      return;
+    }
+    await this.recipeService.toggleLike(recipe);
+  }
+
+  async toggleSave(recipe: Recipe, event: Event): Promise<void> {
+    event.preventDefault();
+    event.stopPropagation();
+    if (!this.userService.getCurrentUser()) {
+      return;
+    }
+    await this.recipeService.toggleSave(recipe);
+  }
+
+  isLiked(recipe: Recipe): boolean {
+    return this.recipeService.isLikedByUser(recipe);
+  }
+
+  isSaved(recipe: Recipe): boolean {
+    return this.recipeService.isSavedByUser(recipe);
+  }
+
   ngOnDestroy() {
     this.routeSubscription?.unsubscribe();
   }
