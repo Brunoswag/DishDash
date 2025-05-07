@@ -2,7 +2,7 @@
 
 DishDash is a social media platform for food enthusiasts to create, share, like, and save delicious recipes. Built with Angular 19, DishDash allows users to interact with a vibrant community of home cooks and food lovers.
 
-Features
+Features:
 *Create Recipes – Share your culinary creations with the community.
 
 *Like & Save Recipes – Show appreciation for others' recipes or bookmark them for later.
@@ -11,7 +11,7 @@ Features
 
 *Profile Page – View your username, cooking stats, and all your created recipes.
 
-Technologies Used
+Technologies Used:
 *Angular 19
 
 *Angular Router
