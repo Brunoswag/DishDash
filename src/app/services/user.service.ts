@@ -16,6 +16,7 @@ import {
 } from '@angular/fire/firestore';
 import { User } from '../models/user'
 import { BehaviorSubject, catchError, from, map, Observable, of } from 'rxjs';
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 
 @Injectable({
   providedIn: 'root',
@@ -145,4 +146,24 @@ export class UserService {
   getCurrentUserSync(): User | null {
     return this.currentUserSubject.value;
   }
+
+  async uploadProfilePicture(file: File): Promise<string> {
+    const storage = getStorage();
+    const uid = this.getCurrentUser()?.uid;
+    if (!uid) throw new Error('No user logged in');
+  
+    const filePath = `profilePictures/${uid}/${file.name}`;
+    const storageRef = ref(storage, filePath);
+  
+    await uploadBytes(storageRef, file);
+    return await getDownloadURL(storageRef);
+  }
+  
+  async updateProfilePicture(uid: string, downloadURL: string): Promise<void> {
+    const userRef = doc(this.firestore, `users/${uid}`);
+    await updateDoc(userRef, {
+      profilePicture: downloadURL
+    });
+  }
+
 }

@@ -38,42 +38,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     private recipeService: RecipeService
   ) {}
 
-  // ngOnInit() {
-  //   // Subscribe to route parameter changes
-  //   this.routeSubscription = this.route.paramMap.subscribe(async params => {
-  //     try {
-  //       this.loading = true;
-  //       const username = params.get('username');
-        
-  //       if (!username) {
-  //         throw new Error('No username provided');
-  //       }
-
-  //       const profileUser = await this.userService.getUserByUsername(username);
-        
-  //       if (!profileUser) {
-  //         throw new Error('User not found');
-  //       }
-
-  //       this.profileUser = profileUser;
-        
-  //       // Check if this is the current user's profile
-  //       const currentUser = this.userService.getCurrentUser();
-  //       this.isOwnProfile = currentUser?.uid === profileUser.uid;
-
-  //       // Load user's stats
-  //       await this.loadUserStats();
-  //     } catch (error) {
-  //       console.error('Error loading profile:', error);
-  //       this.error = 'Profile not found';
-  //       this.router.navigate(['/home']);
-  //     } finally {
-  //       this.loading = false;
-  //     }
-
-  //     });
-  // }
-
   ngOnInit() {
     // Subscribe to route parameter changes
     this.routeSubscription = this.route.paramMap.subscribe(params => {
@@ -139,6 +103,26 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.recipesSaved = this.profileUser.savedRecipes?.length || 0;
     this.recipesLiked = this.profileUser.likedRecipes?.length || 0;
 
+  }
+
+  onProfilePictureSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) return;
+  
+    const file = input.files[0];
+  
+    // Upload the file to Firebase Storage
+    this.userService.uploadProfilePicture(file).then(downloadURL => {
+      if (this.profileUser) {
+        this.userService.updateProfilePicture(this.profileUser.uid, downloadURL).then(() => {
+          this.profileUser!.profilePicture = downloadURL;
+        }).catch(err => {
+          console.error('Error updating profile picture:', err);
+        });
+      }
+    }).catch(err => {
+      console.error('Error uploading profile picture:', err);
+    });
   }
 
   getProfilePicture(): string {

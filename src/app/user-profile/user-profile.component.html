@@ -35,6 +35,20 @@
       <p><strong>Recipes created:</strong> {{ recipesCreated }}</p>
       <p><strong>Recipes saved:</strong> {{ recipesSaved }}</p>
       <p><strong>Recipes liked:</strong> {{ recipesLiked }}</p>
+      @if (isOwnProfile) {
+        <hr />
+        <h2>Change Profile Picture</h2>
+        <form>
+          <div class="form-group">
+            <input
+              class="form-control-file"
+              type="file"
+              (change)="onProfilePictureSelected($event)"
+              accept="image/*"
+            />
+          </div>
+        </form>
+      }
     </div>
 
     <div class="recipe-section">
