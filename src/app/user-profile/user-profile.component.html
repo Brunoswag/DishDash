@@ -5,11 +5,13 @@
 } @else if (profileUser) {
   <div class="profile-container">
     <div class="profile-header">
-      <img
-        [src]="getProfilePicture()"
-        [alt]="profileUser.username + '\'s profile picture'"
-        class="profile-pic"
-      />
+      <div class="profile-pic-container">
+        <img
+          [src]="getProfilePicture()"
+          [alt]="profileUser.username + '\'s profile picture'"
+          class="profile-pic"
+        />
+      </div>
       <div class="info-box">
         <div class="rating">
           <!-- @for (star of [].constructor(rating); track $index) {
@@ -18,9 +20,20 @@
           <div>
             <h2>{{ profileUser.username }}</h2>
             <h5>Last online: {{ getLastOnlineDate() | date: "longDate" }}</h5>
-            <!-- @if (isOwnProfile) {
-              <span class="badge bg-primary">Your Profile</span>
-            } -->
+            @if (isOwnProfile) {
+              <div class="profile-actions">
+                <label for="profile-pic-upload" class="upload-btn">
+                  <i class="bi bi-camera"></i> Upload New Profile Picture
+                </label>
+                <input
+                  id="profile-pic-upload"
+                  type="file"
+                  (change)="onProfilePictureSelected($event)"
+                  accept="image/*"
+                  style="display: none;"
+                />
+              </div>
+            }
           </div>
         </div>
       </div>
@@ -35,37 +48,37 @@
       <p><strong>Recipes created:</strong> {{ recipesCreated }}</p>
       <p><strong>Recipes saved:</strong> {{ recipesSaved }}</p>
       <p><strong>Recipes liked:</strong> {{ recipesLiked }}</p>
-      @if (isOwnProfile) {
-        <hr />
-        <h2>Change Profile Picture</h2>
-        <form>
-          <div class="form-group">
-            <input
-              class="form-control-file"
-              type="file"
-              (change)="onProfilePictureSelected($event)"
-              accept="image/*"
-            />
-          </div>
-        </form>
-      }
     </div>
 
     <div class="recipe-section">
-      <div class="recipe-box">
-        <h2>Created Recipes</h2>
-        @if (createdRecipes!.length > 0) {
-          <ul>
-            @for (recipe of createdRecipes; track recipe.id) {
-              <li>
-                <a [routerLink]="['/recipe', recipe.id]">
-                  <p>{{ recipe.name }}</p>
-                </a>
-              </li>
-            }
-          </ul>
-        } @else {
-          <p>No recipes created yet.</p>
+      <h2>Created Recipes</h2>
+      <div class="recipe-grid">
+        @for (recipe of createdRecipes; track recipe.id) {
+          <div class="recipe-card" [routerLink]="['/recipe', recipe.id]" role="button">
+            <img
+              [src]="recipe.imageUrl || 'https://placehold.co/600x400/png?text=Recipe'"
+              [alt]="recipe.name"
+              class="recipe-image"
+              (error)="handleImageError($event)"
+            />
+            <div class="recipe-info">
+              <h3 class="recipe-title">{{ recipe.name }}</h3>
+              <div class="recipe-stats">
+                <button class="stat-btn" (click)="toggleLike(recipe, $event)" [class.active]="isLiked(recipe)">
+                  <i class="bi" [class.bi-heart-fill]="isLiked(recipe)" [class.bi-heart]="!isLiked(recipe)"></i>
+                  {{ recipe.likes }}
+                </button>
+                <button class="stat-btn" (click)="toggleSave(recipe, $event)" [class.active]="isSaved(recipe)">
+                  <i class="bi" [class.bi-bookmark-fill]="isSaved(recipe)" [class.bi-bookmark]="!isSaved(recipe)"></i>
+                  {{ recipe.saves }}
+                </button>
+              </div>
+            </div>
+          </div>
+        } @empty {
+          <div class="no-recipes">
+            <p>No recipes created yet.</p>
+          </div>
         }
       </div>
     </div>
